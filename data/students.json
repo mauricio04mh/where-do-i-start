@@ -1,0 +1,35 @@
+[
+  {
+    "id": "student-web-builder",
+    "goal": "Build and publish a small interactive portfolio application.",
+    "available_hours": 30,
+    "known_resources": [
+      "git-foundations",
+      "web-html-css"
+    ],
+    "preferred_difficulty": 3,
+    "preference": "practical"
+  },
+  {
+    "id": "student-data-analyst",
+    "goal": "Learn enough programming and data skills to analyze CSV datasets independently.",
+    "available_hours": 35,
+    "known_resources": [
+      "python-basics",
+      "databases-sql"
+    ],
+    "preferred_difficulty": 3,
+    "preference": "balanced"
+  },
+  {
+    "id": "student-cs-foundations",
+    "goal": "Strengthen computer science fundamentals before taking advanced algorithms or AI courses.",
+    "available_hours": 24,
+    "known_resources": [
+      "python-basics",
+      "data-structures-intro"
+    ],
+    "preferred_difficulty": 4,
+    "preference": "theoretical"
+  }
+]

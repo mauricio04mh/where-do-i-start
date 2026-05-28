@@ -1,0 +1,145 @@
+[
+  {
+    "id": "python-basics",
+    "title": "Python Programming Basics",
+    "topic": "Programming",
+    "duration_hours": 8,
+    "difficulty": 1,
+    "prerequisites": [],
+    "description": "An introduction to Python syntax, variables, control flow, functions, and simple scripts.",
+    "type": "course"
+  },
+  {
+    "id": "git-foundations",
+    "title": "Git and GitHub Foundations",
+    "topic": "Developer Tools",
+    "duration_hours": 5,
+    "difficulty": 1,
+    "prerequisites": [],
+    "description": "Learn version control basics, commits, branches, pull requests, and collaborative workflows.",
+    "type": "workshop"
+  },
+  {
+    "id": "data-structures-intro",
+    "title": "Data Structures Intro",
+    "topic": "Computer Science",
+    "duration_hours": 10,
+    "difficulty": 2,
+    "prerequisites": [
+      "python-basics"
+    ],
+    "description": "Covers lists, stacks, queues, dictionaries, sets, trees, and when to use each structure.",
+    "type": "course"
+  },
+  {
+    "id": "algorithms-basics",
+    "title": "Algorithms Basics",
+    "topic": "Computer Science",
+    "duration_hours": 12,
+    "difficulty": 3,
+    "prerequisites": [
+      "python-basics",
+      "data-structures-intro"
+    ],
+    "description": "Practice searching, sorting, recursion, complexity analysis, and basic problem-solving patterns.",
+    "type": "course"
+  },
+  {
+    "id": "web-html-css",
+    "title": "HTML and CSS Fundamentals",
+    "topic": "Web Development",
+    "duration_hours": 9,
+    "difficulty": 1,
+    "prerequisites": [],
+    "description": "Build static pages while learning semantic HTML, CSS layout, responsive design, and accessibility basics.",
+    "type": "project"
+  },
+  {
+    "id": "javascript-essentials",
+    "title": "JavaScript Essentials",
+    "topic": "Web Development",
+    "duration_hours": 11,
+    "difficulty": 2,
+    "prerequisites": [
+      "web-html-css"
+    ],
+    "description": "Learn JavaScript fundamentals, DOM manipulation, events, modules, and asynchronous code.",
+    "type": "course"
+  },
+  {
+    "id": "frontend-mini-app",
+    "title": "Build a Frontend Mini App",
+    "topic": "Web Development",
+    "duration_hours": 14,
+    "difficulty": 3,
+    "prerequisites": [
+      "web-html-css",
+      "javascript-essentials",
+      "git-foundations"
+    ],
+    "description": "Create a small interactive browser app with state, reusable components, and deployed source control.",
+    "type": "project"
+  },
+  {
+    "id": "databases-sql",
+    "title": "SQL and Relational Databases",
+    "topic": "Databases",
+    "duration_hours": 8,
+    "difficulty": 2,
+    "prerequisites": [],
+    "description": "Study tables, relationships, SELECT queries, joins, aggregation, indexes, and basic schema design.",
+    "type": "course"
+  },
+  {
+    "id": "api-design",
+    "title": "REST API Design",
+    "topic": "Backend Development",
+    "duration_hours": 10,
+    "difficulty": 3,
+    "prerequisites": [
+      "python-basics",
+      "databases-sql"
+    ],
+    "description": "Design and implement HTTP APIs with routing, validation, persistence, authentication concepts, and error handling.",
+    "type": "workshop"
+  },
+  {
+    "id": "testing-debugging",
+    "title": "Testing and Debugging Practice",
+    "topic": "Software Quality",
+    "duration_hours": 7,
+    "difficulty": 2,
+    "prerequisites": [
+      "python-basics"
+    ],
+    "description": "Write unit tests, reproduce bugs, inspect failures, use logging, and build safer development habits.",
+    "type": "workshop"
+  },
+  {
+    "id": "data-analysis-pandas",
+    "title": "Data Analysis with Pandas",
+    "topic": "Data Science",
+    "duration_hours": 13,
+    "difficulty": 3,
+    "prerequisites": [
+      "python-basics",
+      "databases-sql"
+    ],
+    "description": "Load, clean, transform, summarize, and visualize datasets using Python data analysis tools.",
+    "type": "project"
+  },
+  {
+    "id": "ml-concepts-reading",
+    "title": "Machine Learning Concepts Reading",
+    "topic": "Machine Learning",
+    "duration_hours": 6,
+    "difficulty": 4,
+    "prerequisites": [
+      "python-basics",
+      "data-analysis-pandas",
+      "algorithms-basics"
+    ],
+    "description": "A guided reading path covering supervised learning, evaluation metrics, overfitting, and model selection.",
+    "type": "reading"
+  }
+]
