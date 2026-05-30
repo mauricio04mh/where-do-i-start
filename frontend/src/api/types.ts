@@ -9,6 +9,8 @@ export type Student = {
   known_resources: string[];
   preferred_difficulty: number;
   preference: Preference;
+  target_topics: string[];
+  constraints: string[];
 };
 
 export type StudentUpdate = {
@@ -17,6 +19,8 @@ export type StudentUpdate = {
   known_resources?: string[];
   preferred_difficulty?: number;
   preference?: Preference;
+  target_topics?: string[];
+  constraints?: string[];
 };
 
 export type Resource = {

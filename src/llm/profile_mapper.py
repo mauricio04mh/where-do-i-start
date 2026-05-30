@@ -66,4 +66,6 @@ def profile_to_student(
         known_resources=known_resources,
         preferred_difficulty=profile.preferred_difficulty,
         preference=profile.preference,
+        target_topics=profile.target_topics,
+        constraints=profile.constraints,
     )

@@ -14,6 +14,8 @@ class StudentBase(BaseModel):
     known_resources: list[str]
     preferred_difficulty: int = Field(ge=1, le=5)
     preference: Preference
+    target_topics: list[str] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
 
 
 class StudentCreate(StudentBase):
@@ -26,6 +28,8 @@ class StudentUpdate(BaseModel):
     known_resources: list[str] | None = None
     preferred_difficulty: int | None = Field(default=None, ge=1, le=5)
     preference: Preference | None = None
+    target_topics: list[str] | None = None
+    constraints: list[str] | None = None
 
 
 class StudentResponse(StudentBase):

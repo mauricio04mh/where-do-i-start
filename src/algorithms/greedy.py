@@ -1,4 +1,5 @@
 import string
+import unicodedata
 from dataclasses import replace
 
 from src.models.learning_path import LearningPath
@@ -33,6 +34,17 @@ STOPWORDS = {
     "or",
     "as",
     "by",
+    "de",
+    "del",
+    "la",
+    "el",
+    "los",
+    "las",
+    "mi",
+    "mis",
+    "con",
+    "entre",
+    "estos",
 }
 
 GOAL_TOPIC_KEYWORDS = {
@@ -56,16 +68,32 @@ GOAL_TOPIC_KEYWORDS = {
     "prompt": {"LLMs"},
     "prompts": {"LLMs"},
     "structured": {"LLMs", "Backend Development"},
-    "api": {"Backend Development", "Deployment"},
-    "apis": {"Backend Development", "Deployment"},
+    "fullstack": {"Web Development", "Backend Development", "Databases"},
+    "full": {"Web Development", "Backend Development", "Databases"},
+    "stack": {"Web Development", "Backend Development", "Databases"},
+    "front": {"Web Development"},
+    "frontend": {"Web Development"},
+    "api": {"Backend Development"},
+    "apis": {"Backend Development"},
     "backend": {"Backend Development", "Databases", "Deployment"},
+    "back": {"Backend Development"},
+    "base": {"Databases"},
+    "datos": {"Databases"},
     "database": {"Databases", "Backend Development"},
     "databases": {"Databases", "Backend Development"},
+    "communication": {"Backend Development"},
+    "comunicacion": {"Backend Development"},
+    "page": {"Web Development"},
+    "pagina": {"Web Development"},
+    "website": {"Web Development"},
     "web": {"Web Development"},
     "portfolio": {"Web Development", "Developer Tools"},
-    "frontend": {"Web Development"},
+    "server": {"Backend Development"},
+    "servidor": {"Backend Development"},
     "deploy": {"Deployment"},
     "deployment": {"Deployment"},
+    "levantar": {"Deployment"},
+    "publicar": {"Deployment"},
     "containers": {"Deployment"},
     "production": {"Deployment"},
     "machine": {"Machine Learning"},
@@ -85,6 +113,14 @@ FOUNDATIONAL_TOPICS = {
     "Developer Tools",
     "Computer Science",
     "Databases",
+    "Web Development",
+    "Backend Development",
+}
+
+FULL_STACK_CORE_TOPICS = {
+    "Web Development",
+    "Backend Development",
+    "Databases",
 }
 
 DATA_SCIENCE_GOAL_TOKENS = {
@@ -99,18 +135,34 @@ DATA_SCIENCE_GOAL_TOKENS = {
 }
 
 
-def compute_rule_based_utility(resource: Resource, student: Student) -> float:
+def compute_rule_based_utility(
+    resource: Resource,
+    student: Student,
+    resources: list[Resource] | None = None,
+) -> float:
     utility = 0.0
-    normalized_goal = _normalize_text(student.goal)
-    goal_tokens = _tokenize_goal(student.goal)
+    normalized_goal = _normalize_text(_student_intent_text(student))
+    goal_tokens = _tokenize_goal(_student_intent_text(student))
     resource_text = _resource_search_text(resource)
-    recommended_topics: set[str] = set()
+    target_topics = {_normalize_topic(topic) for topic in student.target_topics}
+    recommended_topics = _recommended_topics_for_student(student)
+    is_prerequisite_for_relevant_resource = (
+        _is_prerequisite_for_relevant_resource(resource, resources, student)
+        if resources is not None
+        else False
+    )
+    semantically_relevant = _resource_matches_goal_or_targets(resource, student)
 
-    for token in goal_tokens:
-        recommended_topics.update(GOAL_TOPIC_KEYWORDS.get(token, set()))
-
+    if _topic_matches_target(resource.topic, student.target_topics):
+        utility += 10.0
     if resource.topic in recommended_topics:
         utility += 8.0
+
+    if resource.topic in FULL_STACK_CORE_TOPICS and _is_full_stack_intent(
+        recommended_topics,
+        target_topics,
+    ):
+        utility += 7.0
 
     if resource.topic == "Data Science" and goal_tokens & DATA_SCIENCE_GOAL_TOKENS:
         utility += 4.0
@@ -123,19 +175,19 @@ def compute_rule_based_utility(resource: Resource, student: Student) -> float:
     utility += min(token_match_bonus, 4.0)
 
     if student.preference == "practical" and resource.type in ["project", "workshop"]:
-        utility += 3.0
+        utility += 2.0
     elif student.preference == "theoretical" and resource.type in ["course", "reading"]:
-        utility += 3.0
+        utility += 2.0
     elif student.preference == "balanced":
-        utility += 1.5
+        utility += 0.5
 
     difficulty_distance = abs(resource.difficulty - student.preferred_difficulty)
     if difficulty_distance == 0:
-        utility += 2.0
-    elif difficulty_distance == 1:
         utility += 1.0
+    elif difficulty_distance == 1:
+        utility += 0.5
     elif resource.difficulty > student.preferred_difficulty + 1:
-        utility -= 3.0
+        utility -= 4.0
 
     known_resource_ids = set(student.known_resources)
     if resource.prerequisites:
@@ -149,17 +201,39 @@ def compute_rule_based_utility(resource: Resource, student: Student) -> float:
         elif known_prerequisites:
             utility += 0.5
 
+    if is_prerequisite_for_relevant_resource:
+        utility += 3.0
+
+    has_topic_guidance = bool(recommended_topics or target_topics)
+    is_foundational = _is_effective_foundational_topic(
+        resource.topic,
+        recommended_topics,
+        target_topics,
+    )
     if (
-        recommended_topics
-        and resource.topic not in recommended_topics
-        and resource.topic not in FOUNDATIONAL_TOPICS
+        has_topic_guidance
+        and not semantically_relevant
+        and not is_foundational
+        and not is_prerequisite_for_relevant_resource
     ):
-        utility -= 2.0
+        utility -= 8.0
+
+    if (
+        not semantically_relevant
+        and not is_foundational
+        and not is_prerequisite_for_relevant_resource
+    ):
+        utility = min(utility, 0.1)
 
     return max(utility, 0.1)
 
 
 def _normalize_text(text: str) -> str:
+    text = (
+        unicodedata.normalize("NFKD", text)
+        .encode("ascii", "ignore")
+        .decode("ascii")
+    )
     text = text.lower().replace("-", " ").replace("_", " ")
     translator = str.maketrans("", "", string.punctuation)
     return text.translate(translator)
@@ -169,7 +243,7 @@ def _tokenize_goal(goal: str) -> set[str]:
     return {
         word
         for word in _normalize_text(goal).split()
-        if len(word) > 3 and word not in STOPWORDS
+        if (len(word) > 3 or word in GOAL_TOPIC_KEYWORDS) and word not in STOPWORDS
     }
 
 
@@ -187,6 +261,106 @@ def _resource_search_text(resource: Resource) -> str:
     )
 
 
+def _normalize_topic(topic: str) -> str:
+    return _normalize_text(topic).strip()
+
+
+def _student_intent_text(student: Student) -> str:
+    return " ".join([student.goal, *student.target_topics, *student.constraints])
+
+
+def _recommended_topics_for_student(student: Student) -> set[str]:
+    recommended_topics: set[str] = set()
+
+    for token in _tokenize_goal(_student_intent_text(student)):
+        recommended_topics.update(GOAL_TOPIC_KEYWORDS.get(token, set()))
+
+    return recommended_topics
+
+
+def _is_full_stack_intent(
+    recommended_topics: set[str],
+    target_topics: set[str],
+) -> bool:
+    matched_topics = set(recommended_topics)
+    matched_topics.update(
+        topic
+        for topic in FULL_STACK_CORE_TOPICS
+        if _normalize_topic(topic) in target_topics
+    )
+
+    return len(matched_topics & FULL_STACK_CORE_TOPICS) >= 2
+
+
+def _topic_matches_target(resource_topic: str, target_topics: list[str]) -> bool:
+    normalized_resource_topic = _normalize_topic(resource_topic)
+    return any(
+        normalized_resource_topic == _normalize_topic(target_topic)
+        for target_topic in target_topics
+    )
+
+
+def _target_topic_tokens(student: Student) -> set[str]:
+    tokens: set[str] = set()
+    for text in [*student.target_topics, *student.constraints]:
+        tokens.update(_tokenize_goal(text))
+
+    return tokens
+
+
+def _resource_matches_goal_or_targets(resource: Resource, student: Student) -> bool:
+    if _topic_matches_target(resource.topic, student.target_topics):
+        return True
+
+    recommended_topics = _recommended_topics_for_student(student)
+    if resource.topic in recommended_topics:
+        return True
+
+    normalized_intent = _normalize_text(_student_intent_text(student))
+    if _normalize_topic(resource.topic) in normalized_intent:
+        return True
+
+    intent_tokens = _tokenize_goal(_student_intent_text(student)) | _target_topic_tokens(
+        student
+    )
+    resource_tokens = set(_resource_search_text(resource).split())
+
+    return len(intent_tokens & resource_tokens) >= 2
+
+
+def _is_effective_foundational_topic(
+    resource_topic: str,
+    recommended_topics: set[str],
+    target_topics: set[str],
+) -> bool:
+    if resource_topic not in FOUNDATIONAL_TOPICS:
+        return False
+
+    if resource_topic in {"Web Development", "Backend Development"}:
+        return resource_topic in recommended_topics or (
+            _normalize_topic(resource_topic) in target_topics
+        )
+
+    return True
+
+
+def _is_prerequisite_for_relevant_resource(
+    resource: Resource,
+    resources: list[Resource] | None,
+    student: Student,
+) -> bool:
+    if resources is None:
+        return False
+
+    for candidate in resources:
+        if resource.id not in candidate.prerequisites:
+            continue
+        if _resource_matches_goal_or_targets(candidate, student):
+            return True
+
+    return False
+
+
 def build_greedy_learning_path(
     student: Student,
     resources: list[Resource],
@@ -196,7 +370,7 @@ def build_greedy_learning_path(
     utility_resources = [
         replace(
             resource,
-            utility=compute_rule_based_utility(resource, student),
+            utility=compute_rule_based_utility(resource, student, resources),
         )
         for resource in resources
     ]
@@ -218,6 +392,12 @@ def build_greedy_learning_path(
 
     for resource in candidates:
         if resource.id in selected_ids:
+            continue
+        if resource.utility < 1.0 and not _is_prerequisite_for_relevant_resource(
+            resource,
+            resources,
+            student,
+        ):
             continue
 
         prerequisite_chain = _missing_prerequisite_chain(

@@ -49,7 +49,23 @@ def load_resources(path: str) -> list[Resource]:
 
 
 def load_students(path: str) -> list[Student]:
-    return _build_items(path, Student)
+    items = _read_json_list(path)
+    students: list[Student] = []
+
+    for index, item in enumerate(items):
+        student_data = {
+            **item,
+            "target_topics": item.get("target_topics", []),
+            "constraints": item.get("constraints", []),
+        }
+        try:
+            students.append(Student(**student_data))
+        except TypeError as exc:
+            raise ValueError(
+                f"Invalid Student at index {index} in {path}: {exc}"
+            ) from exc
+
+    return students
 
 
 def get_student_by_id(students: list[Student], student_id: str) -> Student:

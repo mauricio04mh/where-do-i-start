@@ -8,7 +8,12 @@
       "web-html-css"
     ],
     "preferred_difficulty": 3,
-    "preference": "practical"
+    "preference": "practical",
+    "target_topics": [
+      "Web Development",
+      "Deployment"
+    ],
+    "constraints": []
   },
   {
     "id": "student-data-analyst",
@@ -19,7 +24,13 @@
       "databases-sql"
     ],
     "preferred_difficulty": 3,
-    "preference": "balanced"
+    "preference": "balanced",
+    "target_topics": [
+      "Programming",
+      "Data Science",
+      "Databases"
+    ],
+    "constraints": []
   },
   {
     "id": "student-cs-foundations",
@@ -30,7 +41,12 @@
       "data-structures-intro"
     ],
     "preferred_difficulty": 4,
-    "preference": "theoretical"
+    "preference": "theoretical",
+    "target_topics": [
+      "Computer Science",
+      "Programming"
+    ],
+    "constraints": []
   },
   {
     "id": "student-chatbot-beginner",
@@ -40,7 +56,12 @@
       "python-basics"
     ],
     "preferred_difficulty": 2,
-    "preference": "practical"
+    "preference": "practical",
+    "target_topics": [
+      "AI Chatbots",
+      "LLMs"
+    ],
+    "constraints": []
   },
   {
     "id": "student-rag-intermediate",
@@ -53,7 +74,14 @@
       "nlp-basics"
     ],
     "preferred_difficulty": 4,
-    "preference": "practical"
+    "preference": "practical",
+    "target_topics": [
+      "RAG",
+      "LLMs",
+      "AI Chatbots",
+      "Databases"
+    ],
+    "constraints": []
   },
   {
     "id": "student-ml-theory",
@@ -65,7 +93,12 @@
       "statistics-basics"
     ],
     "preferred_difficulty": 4,
-    "preference": "theoretical"
+    "preference": "theoretical",
+    "target_topics": [
+      "Machine Learning",
+      "Data Science"
+    ],
+    "constraints": []
   },
   {
     "id": "student-web-backend",
@@ -76,7 +109,12 @@
       "git-foundations"
     ],
     "preferred_difficulty": 3,
-    "preference": "balanced"
+    "preference": "balanced",
+    "target_topics": [
+      "Backend Development",
+      "Databases"
+    ],
+    "constraints": []
   },
   {
     "id": "student-ai-product",
@@ -84,7 +122,12 @@
     "available_hours": 18,
     "known_resources": [],
     "preferred_difficulty": 2,
-    "preference": "theoretical"
+    "preference": "theoretical",
+    "target_topics": [
+      "AI Chatbots",
+      "Responsible AI"
+    ],
+    "constraints": []
   },
   {
     "id": "student-llm-apps",
@@ -95,7 +138,12 @@
       "api-design"
     ],
     "preferred_difficulty": 4,
-    "preference": "practical"
+    "preference": "practical",
+    "target_topics": [
+      "LLMs",
+      "Backend Development"
+    ],
+    "constraints": []
   },
   {
     "id": "student-data-visualizer",
@@ -106,7 +154,12 @@
       "databases-sql"
     ],
     "preferred_difficulty": 3,
-    "preference": "balanced"
+    "preference": "balanced",
+    "target_topics": [
+      "Data Science",
+      "Databases"
+    ],
+    "constraints": []
   },
   {
     "id": "student-deployment-focused",
@@ -118,7 +171,13 @@
       "api-design"
     ],
     "preferred_difficulty": 4,
-    "preference": "practical"
+    "preference": "practical",
+    "target_topics": [
+      "Deployment",
+      "Backend Development",
+      "AI Chatbots"
+    ],
+    "constraints": []
   },
   {
     "id": "student-responsible-ai",
@@ -128,6 +187,11 @@
       "chatbot-concepts"
     ],
     "preferred_difficulty": 3,
-    "preference": "theoretical"
+    "preference": "theoretical",
+    "target_topics": [
+      "Responsible AI",
+      "AI Chatbots"
+    ],
+    "constraints": []
   }
 ]

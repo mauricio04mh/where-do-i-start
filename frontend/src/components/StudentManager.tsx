@@ -14,6 +14,8 @@ type StudentForm = {
   known_resources: string;
   preferred_difficulty: number;
   preference: Preference;
+  target_topics: string;
+  constraints: string;
 };
 
 const emptyForm: StudentForm = {
@@ -23,6 +25,8 @@ const emptyForm: StudentForm = {
   known_resources: "",
   preferred_difficulty: 3,
   preference: "balanced",
+  target_topics: "",
+  constraints: "",
 };
 
 function StudentManager() {
@@ -66,6 +70,8 @@ function StudentManager() {
           known_resources: payload.known_resources,
           preferred_difficulty: payload.preferred_difficulty,
           preference: payload.preference,
+          target_topics: payload.target_topics,
+          constraints: payload.constraints,
         };
         await updateStudent(editingId, updates);
         setSuccess("Estudiante actualizado correctamente.");
@@ -110,6 +116,8 @@ function StudentManager() {
       known_resources: student.known_resources.join(", "),
       preferred_difficulty: student.preferred_difficulty,
       preference: student.preference,
+      target_topics: student.target_topics.join(", "),
+      constraints: student.constraints.join(", "),
     });
     setError("");
     setSuccess("");
@@ -214,6 +222,28 @@ function StudentManager() {
           />
         </label>
 
+        <label className="full-width">
+          Topicos objetivo
+          <textarea
+            value={form.target_topics}
+            onChange={(event) =>
+              setForm({ ...form, target_topics: event.target.value })
+            }
+            placeholder="Web Development, Backend Development, Databases"
+          />
+        </label>
+
+        <label className="full-width">
+          Restricciones
+          <textarea
+            value={form.constraints}
+            onChange={(event) =>
+              setForm({ ...form, constraints: event.target.value })
+            }
+            placeholder="sin conocimientos avanzados, proyectos practicos"
+          />
+        </label>
+
         <div className="form-actions">
           <button disabled={saving} type="submit">
             {saving ? "Guardando..." : editingId ? "Guardar cambios" : "Crear"}
@@ -236,6 +266,7 @@ function StudentManager() {
                 <th>Dificultad</th>
                 <th>Preferencia</th>
                 <th>Recursos conocidos</th>
+                <th>Topicos objetivo</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -248,6 +279,7 @@ function StudentManager() {
                   <td>{student.preferred_difficulty}</td>
                   <td>{student.preference}</td>
                   <td>{student.known_resources.join(", ") || "-"}</td>
+                  <td>{student.target_topics.join(", ") || "-"}</td>
                   <td className="row-actions">
                     <button
                       className="secondary"
@@ -268,7 +300,7 @@ function StudentManager() {
               ))}
               {students.length === 0 && (
                 <tr>
-                  <td colSpan={7}>No hay estudiantes registrados.</td>
+                  <td colSpan={8}>No hay estudiantes registrados.</td>
                 </tr>
               )}
             </tbody>
@@ -287,6 +319,8 @@ function buildStudentPayload(form: StudentForm): Student {
     known_resources: splitCommaList(form.known_resources),
     preferred_difficulty: Number(form.preferred_difficulty),
     preference: form.preference,
+    target_topics: splitCommaList(form.target_topics),
+    constraints: splitCommaList(form.constraints),
   };
 }
 

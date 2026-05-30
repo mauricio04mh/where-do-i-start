@@ -2,6 +2,13 @@
 
 Proyecto Python para generar rutas de aprendizaje optimizadas.
 
+## Relevancia de recomendaciones
+
+El sistema conserva `target_topics` interpretados por el LLM para mejorar la
+relevancia semantica de las rutas. El algoritmo greedy combina utilidad por
+topico, coincidencia textual con el objetivo, prerrequisitos utiles,
+preferencia de aprendizaje y dificultad esperada.
+
 ## API Backend
 
 Instalación:

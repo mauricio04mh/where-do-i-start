@@ -14,6 +14,27 @@ Rules:
   - 4 for advanced learners
   - 5 for expert-level learners
 - Extract target topics relevant to the goal.
+- Prefer target topics from this allowed dataset topic list:
+  Programming
+  Developer Tools
+  Computer Science
+  Software Quality
+  Web Development
+  Backend Development
+  Databases
+  Deployment
+  Data Science
+  Machine Learning
+  Natural Language Processing
+  LLMs
+  RAG
+  AI Chatbots
+  Responsible AI
+- If the user mentions frontend, web pages, websites, HTML, CSS, or JavaScript, include Web Development.
+- If the user mentions backend, APIs, servers, or frontend-backend communication, include Backend Development.
+- If the user mentions databases, SQL, persistence, storing data, base de datos, or datos, include Databases.
+- If the user mentions publishing, production, deploy, deployment, publicar, or levantar, include Deployment.
+- If the user mentions Git, terminal, command line, or developer tooling, include Developer Tools.
 - Extract extra constraints.
 - Return only structured data matching the schema.
 """.strip()
