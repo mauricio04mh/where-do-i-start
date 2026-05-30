@@ -7,7 +7,8 @@
     "difficulty": 1,
     "prerequisites": [],
     "description": "An introduction to Python syntax, variables, control flow, functions, and simple scripts.",
-    "type": "course"
+    "type": "course",
+    "utility": 0.0
   },
   {
     "id": "git-foundations",
@@ -17,7 +18,19 @@
     "difficulty": 1,
     "prerequisites": [],
     "description": "Learn version control basics, commits, branches, pull requests, and collaborative workflows.",
-    "type": "workshop"
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "command-line-basics",
+    "title": "Command Line Basics",
+    "topic": "Developer Tools",
+    "duration_hours": 4,
+    "difficulty": 1,
+    "prerequisites": [],
+    "description": "Use terminal commands to navigate files, run scripts, manage environments, and automate simple tasks.",
+    "type": "workshop",
+    "utility": 0.0
   },
   {
     "id": "data-structures-intro",
@@ -29,7 +42,8 @@
       "python-basics"
     ],
     "description": "Covers lists, stacks, queues, dictionaries, sets, trees, and when to use each structure.",
-    "type": "course"
+    "type": "course",
+    "utility": 0.0
   },
   {
     "id": "algorithms-basics",
@@ -42,7 +56,34 @@
       "data-structures-intro"
     ],
     "description": "Practice searching, sorting, recursion, complexity analysis, and basic problem-solving patterns.",
-    "type": "course"
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "python-oop",
+    "title": "Object-Oriented Programming in Python",
+    "topic": "Programming",
+    "duration_hours": 9,
+    "difficulty": 2,
+    "prerequisites": [
+      "python-basics"
+    ],
+    "description": "Learn classes, objects, inheritance, encapsulation, and how to organize larger Python applications.",
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "testing-debugging",
+    "title": "Testing and Debugging Practice",
+    "topic": "Software Quality",
+    "duration_hours": 7,
+    "difficulty": 2,
+    "prerequisites": [
+      "python-basics"
+    ],
+    "description": "Write unit tests, reproduce bugs, inspect failures, use logging, and build safer development habits.",
+    "type": "workshop",
+    "utility": 0.0
   },
   {
     "id": "web-html-css",
@@ -52,7 +93,8 @@
     "difficulty": 1,
     "prerequisites": [],
     "description": "Build static pages while learning semantic HTML, CSS layout, responsive design, and accessibility basics.",
-    "type": "project"
+    "type": "project",
+    "utility": 0.0
   },
   {
     "id": "javascript-essentials",
@@ -64,7 +106,8 @@
       "web-html-css"
     ],
     "description": "Learn JavaScript fundamentals, DOM manipulation, events, modules, and asynchronous code.",
-    "type": "course"
+    "type": "course",
+    "utility": 0.0
   },
   {
     "id": "frontend-mini-app",
@@ -78,7 +121,8 @@
       "git-foundations"
     ],
     "description": "Create a small interactive browser app with state, reusable components, and deployed source control.",
-    "type": "project"
+    "type": "project",
+    "utility": 0.0
   },
   {
     "id": "databases-sql",
@@ -88,7 +132,21 @@
     "difficulty": 2,
     "prerequisites": [],
     "description": "Study tables, relationships, SELECT queries, joins, aggregation, indexes, and basic schema design.",
-    "type": "course"
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "database-design",
+    "title": "Database Design and Modeling",
+    "topic": "Databases",
+    "duration_hours": 9,
+    "difficulty": 3,
+    "prerequisites": [
+      "databases-sql"
+    ],
+    "description": "Design normalized schemas, relationships, constraints, indexes, and data models for real applications.",
+    "type": "course",
+    "utility": 0.0
   },
   {
     "id": "api-design",
@@ -101,19 +159,63 @@
       "databases-sql"
     ],
     "description": "Design and implement HTTP APIs with routing, validation, persistence, authentication concepts, and error handling.",
-    "type": "workshop"
+    "type": "workshop",
+    "utility": 0.0
   },
   {
-    "id": "testing-debugging",
-    "title": "Testing and Debugging Practice",
-    "topic": "Software Quality",
-    "duration_hours": 7,
-    "difficulty": 2,
+    "id": "fastapi-basics",
+    "title": "FastAPI Basics",
+    "topic": "Backend Development",
+    "duration_hours": 9,
+    "difficulty": 3,
     "prerequisites": [
-      "python-basics"
+      "python-basics",
+      "api-design"
     ],
-    "description": "Write unit tests, reproduce bugs, inspect failures, use logging, and build safer development habits.",
-    "type": "workshop"
+    "description": "Build Python web APIs with FastAPI, request validation, route handlers, dependency injection, and simple persistence.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "authentication-basics",
+    "title": "Authentication Basics for Web APIs",
+    "topic": "Backend Development",
+    "duration_hours": 7,
+    "difficulty": 4,
+    "prerequisites": [
+      "api-design",
+      "databases-sql"
+    ],
+    "description": "Learn login flows, password hashing, tokens, sessions, permissions, and secure API access patterns.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "docker-basics",
+    "title": "Docker Basics for Developers",
+    "topic": "Deployment",
+    "duration_hours": 8,
+    "difficulty": 3,
+    "prerequisites": [
+      "command-line-basics"
+    ],
+    "description": "Package applications with containers, write Dockerfiles, manage images, and run services consistently.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "deployment-fundamentals",
+    "title": "Deployment Fundamentals",
+    "topic": "Deployment",
+    "duration_hours": 8,
+    "difficulty": 3,
+    "prerequisites": [
+      "git-foundations",
+      "command-line-basics"
+    ],
+    "description": "Understand environments, configuration, hosting, logs, environment variables, and basic release workflows.",
+    "type": "course",
+    "utility": 0.0
   },
   {
     "id": "data-analysis-pandas",
@@ -126,20 +228,276 @@
       "databases-sql"
     ],
     "description": "Load, clean, transform, summarize, and visualize datasets using Python data analysis tools.",
-    "type": "project"
+    "type": "project",
+    "utility": 0.0
   },
   {
-    "id": "ml-concepts-reading",
-    "title": "Machine Learning Concepts Reading",
+    "id": "data-visualization",
+    "title": "Data Visualization with Python",
+    "topic": "Data Science",
+    "duration_hours": 8,
+    "difficulty": 3,
+    "prerequisites": [
+      "data-analysis-pandas"
+    ],
+    "description": "Create plots and dashboards that communicate patterns, trends, comparisons, and distributions.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "statistics-basics",
+    "title": "Statistics Basics for Data Science",
+    "topic": "Data Science",
+    "duration_hours": 10,
+    "difficulty": 3,
+    "prerequisites": [],
+    "description": "Study descriptive statistics, probability, distributions, sampling, correlation, and uncertainty.",
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "machine-learning-intro",
+    "title": "Introduction to Machine Learning",
     "topic": "Machine Learning",
-    "duration_hours": 6,
+    "duration_hours": 12,
     "difficulty": 4,
     "prerequisites": [
       "python-basics",
       "data-analysis-pandas",
-      "algorithms-basics"
+      "statistics-basics"
     ],
-    "description": "A guided reading path covering supervised learning, evaluation metrics, overfitting, and model selection.",
-    "type": "reading"
+    "description": "Learn supervised learning, regression, classification, training workflows, and basic model selection.",
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "model-evaluation",
+    "title": "Machine Learning Model Evaluation",
+    "topic": "Machine Learning",
+    "duration_hours": 8,
+    "difficulty": 4,
+    "prerequisites": [
+      "machine-learning-intro"
+    ],
+    "description": "Evaluate models using train-test splits, cross-validation, precision, recall, F1 score, ROC curves, and error analysis.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "feature-engineering",
+    "title": "Feature Engineering Practice",
+    "topic": "Machine Learning",
+    "duration_hours": 9,
+    "difficulty": 4,
+    "prerequisites": [
+      "data-analysis-pandas",
+      "machine-learning-intro"
+    ],
+    "description": "Transform raw data into useful features through encoding, scaling, aggregation, missing value handling, and domain signals.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "nlp-basics",
+    "title": "Natural Language Processing Basics",
+    "topic": "Natural Language Processing",
+    "duration_hours": 8,
+    "difficulty": 3,
+    "prerequisites": [
+      "python-basics",
+      "data-structures-intro"
+    ],
+    "description": "Learn tokenization, text normalization, bag-of-words, text classification, and basic NLP pipelines.",
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "text-preprocessing",
+    "title": "Text Preprocessing Workshop",
+    "topic": "Natural Language Processing",
+    "duration_hours": 6,
+    "difficulty": 3,
+    "prerequisites": [
+      "nlp-basics"
+    ],
+    "description": "Clean, tokenize, normalize, and prepare text datasets for search, classification, and language model workflows.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "llm-fundamentals",
+    "title": "Large Language Model Fundamentals",
+    "topic": "LLMs",
+    "duration_hours": 7,
+    "difficulty": 3,
+    "prerequisites": [
+      "nlp-basics"
+    ],
+    "description": "Understand how large language models work, their capabilities, limitations, context windows, and common use cases.",
+    "type": "reading",
+    "utility": 0.0
+  },
+  {
+    "id": "prompt-engineering",
+    "title": "Prompt Engineering for Practical AI Systems",
+    "topic": "LLMs",
+    "duration_hours": 6,
+    "difficulty": 3,
+    "prerequisites": [
+      "llm-fundamentals"
+    ],
+    "description": "Design effective prompts, few-shot examples, structured outputs, evaluation prompts, and prompt iteration strategies.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "structured-llm-output",
+    "title": "Structured Output with LLMs",
+    "topic": "LLMs",
+    "duration_hours": 6,
+    "difficulty": 4,
+    "prerequisites": [
+      "prompt-engineering",
+      "api-design"
+    ],
+    "description": "Use schemas, JSON responses, validation, retries, and guardrails to make LLM outputs usable in applications.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "embeddings-intro",
+    "title": "Embeddings and Semantic Search",
+    "topic": "LLMs",
+    "duration_hours": 8,
+    "difficulty": 4,
+    "prerequisites": [
+      "llm-fundamentals",
+      "python-basics"
+    ],
+    "description": "Learn how embeddings represent meaning, how semantic similarity works, and how embeddings support search and recommendation.",
+    "type": "course",
+    "utility": 0.0
+  },
+  {
+    "id": "vector-databases",
+    "title": "Vector Databases for AI Applications",
+    "topic": "RAG",
+    "duration_hours": 7,
+    "difficulty": 4,
+    "prerequisites": [
+      "embeddings-intro",
+      "databases-sql"
+    ],
+    "description": "Study vector indexes, similarity search, metadata filtering, and how vector databases are used in AI applications.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "rag-fundamentals",
+    "title": "Retrieval-Augmented Generation Fundamentals",
+    "topic": "RAG",
+    "duration_hours": 10,
+    "difficulty": 4,
+    "prerequisites": [
+      "prompt-engineering",
+      "embeddings-intro",
+      "vector-databases"
+    ],
+    "description": "Build a basic retrieval-augmented generation pipeline using documents, embeddings, retrieval, and answer generation.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "chatbot-concepts",
+    "title": "Chatbot Design Concepts",
+    "topic": "AI Chatbots",
+    "duration_hours": 5,
+    "difficulty": 2,
+    "prerequisites": [],
+    "description": "Learn intents, conversation flows, fallback handling, user experience principles, and chatbot use cases.",
+    "type": "reading",
+    "utility": 0.0
+  },
+  {
+    "id": "rule-based-chatbot-project",
+    "title": "Build a Rule-Based Chatbot",
+    "topic": "AI Chatbots",
+    "duration_hours": 8,
+    "difficulty": 2,
+    "prerequisites": [
+      "python-basics",
+      "chatbot-concepts"
+    ],
+    "description": "Implement a simple chatbot using Python rules, dictionaries, conditionals, and predefined conversation flows.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "llm-chatbot-project",
+    "title": "Build an LLM-Powered Chatbot",
+    "topic": "AI Chatbots",
+    "duration_hours": 12,
+    "difficulty": 4,
+    "prerequisites": [
+      "prompt-engineering",
+      "api-design"
+    ],
+    "description": "Create a chatbot that calls an LLM API, handles user messages, formats prompts, and returns structured responses.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "rag-chatbot-project",
+    "title": "Build a RAG Chatbot over Documents",
+    "topic": "AI Chatbots",
+    "duration_hours": 15,
+    "difficulty": 5,
+    "prerequisites": [
+      "rag-fundamentals",
+      "llm-chatbot-project"
+    ],
+    "description": "Develop a chatbot that answers questions from private documents using retrieval-augmented generation.",
+    "type": "project",
+    "utility": 0.0
+  },
+  {
+    "id": "chatbot-deployment",
+    "title": "Deploy a Chatbot API",
+    "topic": "Deployment",
+    "duration_hours": 9,
+    "difficulty": 4,
+    "prerequisites": [
+      "llm-chatbot-project",
+      "docker-basics",
+      "deployment-fundamentals"
+    ],
+    "description": "Package, configure, and deploy a chatbot backend service with environment variables, API keys, and basic monitoring.",
+    "type": "workshop",
+    "utility": 0.0
+  },
+  {
+    "id": "ai-ethics-basics",
+    "title": "Responsible AI and Ethics Basics",
+    "topic": "Responsible AI",
+    "duration_hours": 4,
+    "difficulty": 2,
+    "prerequisites": [],
+    "description": "Study fairness, transparency, privacy, hallucinations, safety, and responsible deployment of AI systems.",
+    "type": "reading",
+    "utility": 0.0
+  },
+  {
+    "id": "privacy-and-data-handling",
+    "title": "Privacy and Data Handling for AI Systems",
+    "topic": "Responsible AI",
+    "duration_hours": 6,
+    "difficulty": 3,
+    "prerequisites": [
+      "ai-ethics-basics",
+      "databases-sql"
+    ],
+    "description": "Learn how to handle user data, API keys, logs, consent, sensitive information, and privacy risks in AI applications.",
+    "type": "course",
+    "utility": 0.0
   }
 ]

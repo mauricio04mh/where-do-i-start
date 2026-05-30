@@ -31,5 +31,103 @@
     ],
     "preferred_difficulty": 4,
     "preference": "theoretical"
+  },
+  {
+    "id": "student-chatbot-beginner",
+    "goal": "Learn how to build a simple AI chatbot for customer support.",
+    "available_hours": 25,
+    "known_resources": [
+      "python-basics"
+    ],
+    "preferred_difficulty": 2,
+    "preference": "practical"
+  },
+  {
+    "id": "student-rag-intermediate",
+    "goal": "Build a RAG system that answers questions from company documents.",
+    "available_hours": 45,
+    "known_resources": [
+      "python-basics",
+      "databases-sql",
+      "api-design",
+      "nlp-basics"
+    ],
+    "preferred_difficulty": 4,
+    "preference": "practical"
+  },
+  {
+    "id": "student-ml-theory",
+    "goal": "Understand the theoretical foundations of machine learning and model evaluation.",
+    "available_hours": 34,
+    "known_resources": [
+      "python-basics",
+      "data-structures-intro",
+      "statistics-basics"
+    ],
+    "preferred_difficulty": 4,
+    "preference": "theoretical"
+  },
+  {
+    "id": "student-web-backend",
+    "goal": "Learn backend development to build APIs connected to databases.",
+    "available_hours": 28,
+    "known_resources": [
+      "python-basics",
+      "git-foundations"
+    ],
+    "preferred_difficulty": 3,
+    "preference": "balanced"
+  },
+  {
+    "id": "student-ai-product",
+    "goal": "Learn enough AI concepts to design safe and useful chatbot products.",
+    "available_hours": 18,
+    "known_resources": [],
+    "preferred_difficulty": 2,
+    "preference": "theoretical"
+  },
+  {
+    "id": "student-llm-apps",
+    "goal": "Build practical applications using LLM APIs, structured outputs, and prompt engineering.",
+    "available_hours": 38,
+    "known_resources": [
+      "python-basics",
+      "api-design"
+    ],
+    "preferred_difficulty": 4,
+    "preference": "practical"
+  },
+  {
+    "id": "student-data-visualizer",
+    "goal": "Analyze datasets and create clear visualizations for reports and presentations.",
+    "available_hours": 22,
+    "known_resources": [
+      "python-basics",
+      "databases-sql"
+    ],
+    "preferred_difficulty": 3,
+    "preference": "balanced"
+  },
+  {
+    "id": "student-deployment-focused",
+    "goal": "Deploy a chatbot backend service using containers and basic production configuration.",
+    "available_hours": 32,
+    "known_resources": [
+      "python-basics",
+      "git-foundations",
+      "api-design"
+    ],
+    "preferred_difficulty": 4,
+    "preference": "practical"
+  },
+  {
+    "id": "student-responsible-ai",
+    "goal": "Understand responsible AI, privacy, and risks before deploying chatbot systems.",
+    "available_hours": 20,
+    "known_resources": [
+      "chatbot-concepts"
+    ],
+    "preferred_difficulty": 3,
+    "preference": "theoretical"
   }
 ]

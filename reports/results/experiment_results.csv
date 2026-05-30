@@ -1,0 +1,13 @@
+student_id,algorithm,total_duration,available_hours,time_usage_ratio,total_utility,resource_count,valid,violation_count,coverage_score,runtime_seconds
+student-web-builder,greedy,29,30,0.9667,36.5000,3,true,0,0.5000,0.0022
+student-data-analyst,greedy,35,35,1.0000,52.5000,4,true,0,0.2500,0.0020
+student-cs-foundations,greedy,24,24,1.0000,21.2500,3,true,0,0.3333,0.0019
+student-chatbot-beginner,greedy,22,25,0.8800,34.5000,4,true,0,0.6667,0.0019
+student-rag-intermediate,greedy,44,45,0.9778,83.7500,6,true,0,0.2500,0.0018
+student-ml-theory,greedy,33,34,0.9706,41.2500,5,true,0,0.4286,0.0018
+student-web-backend,greedy,25,28,0.8929,53.2500,3,true,0,0.7143,0.0018
+student-ai-product,greedy,17,18,0.9444,34.0000,3,true,0,0.5000,0.0018
+student-llm-apps,greedy,37,38,0.9737,42.1000,5,true,0,0.6667,0.0017
+student-data-visualizer,greedy,21,22,0.9545,33.2500,2,true,0,0.2857,0.0017
+student-deployment-focused,greedy,32,32,1.0000,47.5000,5,true,0,0.4444,0.0017
+student-responsible-ai,greedy,18,20,0.9000,52.2500,3,true,0,0.5000,0.0019

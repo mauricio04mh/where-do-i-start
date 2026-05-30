@@ -1,0 +1,478 @@
+============================================================
+Student: student-web-builder
+Algorithm: greedy
+Goal: Build and publish a small interactive portfolio application.
+Available time: 30 hours
+
+Recommended path:
+1. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 11.00
+
+2. JavaScript Essentials
+   id: javascript-essentials
+   topic: Web Development
+   duration: 11h
+   difficulty: 2
+   utility: 10.50
+
+3. Build a Frontend Mini App
+   id: frontend-mini-app
+   topic: Web Development
+   duration: 14h
+   difficulty: 3
+   utility: 15.00
+
+Total duration: 29h
+Total utility: 36.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-data-analyst
+Algorithm: greedy
+Goal: Learn enough programming and data skills to analyze CSV datasets independently.
+Available time: 35 hours
+
+Recommended path:
+1. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 18.50
+
+2. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 16.25
+
+3. Statistics Basics for Data Science
+   id: statistics-basics
+   topic: Data Science
+   duration: 10h
+   difficulty: 3
+   utility: 16.25
+
+4. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 1.50
+
+Total duration: 35h
+Total utility: 52.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-cs-foundations
+Algorithm: greedy
+Goal: Strengthen computer science fundamentals before taking advanced algorithms or AI courses.
+Available time: 24 hours
+
+Recommended path:
+1. Algorithms Basics
+   id: algorithms-basics
+   topic: Computer Science
+   duration: 12h
+   difficulty: 3
+   utility: 12.75
+
+2. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 3.00
+
+3. Natural Language Processing Basics
+   id: nlp-basics
+   topic: Natural Language Processing
+   duration: 8h
+   difficulty: 3
+   utility: 5.50
+
+Total duration: 24h
+Total utility: 21.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-chatbot-beginner
+Algorithm: greedy
+Goal: Learn how to build a simple AI chatbot for customer support.
+Available time: 25 hours
+
+Recommended path:
+1. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 10.75
+
+2. Build a Rule-Based Chatbot
+   id: rule-based-chatbot-project
+   topic: AI Chatbots
+   duration: 8h
+   difficulty: 2
+   utility: 15.00
+
+3. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 4.75
+
+4. Git and GitHub Foundations
+   id: git-foundations
+   topic: Developer Tools
+   duration: 5h
+   difficulty: 1
+   utility: 4.00
+
+Total duration: 22h
+Total utility: 34.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-rag-intermediate
+Algorithm: greedy
+Goal: Build a RAG system that answers questions from company documents.
+Available time: 45 hours
+
+Recommended path:
+1. Large Language Model Fundamentals
+   id: llm-fundamentals
+   topic: LLMs
+   duration: 7h
+   difficulty: 3
+   utility: 10.50
+
+2. Embeddings and Semantic Search
+   id: embeddings-intro
+   topic: LLMs
+   duration: 8h
+   difficulty: 4
+   utility: 10.50
+
+3. Vector Databases for AI Applications
+   id: vector-databases
+   topic: RAG
+   duration: 7h
+   difficulty: 4
+   utility: 18.50
+
+4. Prompt Engineering for Practical AI Systems
+   id: prompt-engineering
+   topic: LLMs
+   duration: 6h
+   difficulty: 3
+   utility: 12.00
+
+5. Structured Output with LLMs
+   id: structured-llm-output
+   topic: LLMs
+   duration: 6h
+   difficulty: 4
+   utility: 13.50
+
+6. Retrieval-Augmented Generation Fundamentals
+   id: rag-fundamentals
+   topic: RAG
+   duration: 10h
+   difficulty: 4
+   utility: 18.75
+
+Total duration: 44h
+Total utility: 83.75
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-ml-theory
+Algorithm: greedy
+Goal: Understand the theoretical foundations of machine learning and model evaluation.
+Available time: 34 hours
+
+Recommended path:
+1. Natural Language Processing Basics
+   id: nlp-basics
+   topic: Natural Language Processing
+   duration: 8h
+   difficulty: 3
+   utility: 3.50
+
+2. Large Language Model Fundamentals
+   id: llm-fundamentals
+   topic: LLMs
+   duration: 7h
+   difficulty: 3
+   utility: 13.50
+
+3. Embeddings and Semantic Search
+   id: embeddings-intro
+   topic: LLMs
+   duration: 8h
+   difficulty: 4
+   utility: 13.50
+
+4. Prompt Engineering for Practical AI Systems
+   id: prompt-engineering
+   topic: LLMs
+   duration: 6h
+   difficulty: 3
+   utility: 9.75
+
+5. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 1.00
+
+Total duration: 33h
+Total utility: 41.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-web-backend
+Algorithm: greedy
+Goal: Learn backend development to build APIs connected to databases.
+Available time: 28 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 16.25
+
+2. REST API Design
+   id: api-design
+   topic: Backend Development
+   duration: 10h
+   difficulty: 3
+   utility: 19.25
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 17.75
+
+Total duration: 25h
+Total utility: 53.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-ai-product
+Algorithm: greedy
+Goal: Learn enough AI concepts to design safe and useful chatbot products.
+Available time: 18 hours
+
+Recommended path:
+1. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 13.00
+
+2. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 15.25
+
+3. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 5.75
+
+Total duration: 17h
+Total utility: 34.00
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-llm-apps
+Algorithm: greedy
+Goal: Build practical applications using LLM APIs, structured outputs, and prompt engineering.
+Available time: 38 hours
+
+Recommended path:
+1. Data Structures Intro
+   id: data-structures-intro
+   topic: Computer Science
+   duration: 10h
+   difficulty: 2
+   utility: 1.50
+
+2. Natural Language Processing Basics
+   id: nlp-basics
+   topic: Natural Language Processing
+   duration: 8h
+   difficulty: 3
+   utility: 0.10
+
+3. Large Language Model Fundamentals
+   id: llm-fundamentals
+   topic: LLMs
+   duration: 7h
+   difficulty: 3
+   utility: 9.00
+
+4. Prompt Engineering for Practical AI Systems
+   id: prompt-engineering
+   topic: LLMs
+   duration: 6h
+   difficulty: 3
+   utility: 15.75
+
+5. Structured Output with LLMs
+   id: structured-llm-output
+   topic: LLMs
+   duration: 6h
+   difficulty: 4
+   utility: 15.75
+
+Total duration: 37h
+Total utility: 42.10
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-data-visualizer
+Algorithm: greedy
+Goal: Analyze datasets and create clear visualizations for reports and presentations.
+Available time: 22 hours
+
+Recommended path:
+1. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 17.75
+
+2. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 15.50
+
+Total duration: 21h
+Total utility: 33.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-deployment-focused
+Algorithm: greedy
+Goal: Deploy a chatbot backend service using containers and basic production configuration.
+Available time: 32 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 8.75
+
+2. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 14.25
+
+3. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 8.75
+
+4. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 3.00
+
+5. Docker Basics for Developers
+   id: docker-basics
+   topic: Deployment
+   duration: 8h
+   difficulty: 3
+   utility: 12.75
+
+Total duration: 32h
+Total utility: 47.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-responsible-ai
+Algorithm: greedy
+Goal: Understand responsible AI, privacy, and risks before deploying chatbot systems.
+Available time: 20 hours
+
+Recommended path:
+1. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 19.25
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 12.00
+
+3. Privacy and Data Handling for AI Systems
+   id: privacy-and-data-handling
+   topic: Responsible AI
+   duration: 6h
+   difficulty: 3
+   utility: 21.00
+
+Total duration: 18h
+Total utility: 52.25
+Valid: True
+Violations: none
+============================================================
+
