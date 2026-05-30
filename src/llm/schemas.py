@@ -1,11 +1,8 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
-
+from pydantic import BaseModel, Field
 
 class StudentProfileExtraction(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     goal: str
     available_hours: int = Field(ge=1, le=500)
     known_topics: list[str]

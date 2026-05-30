@@ -2,6 +2,7 @@ import json
 
 from src.llm.interpreter import interpret_student_profile
 from src.llm.profile_mapper import profile_to_student
+from src.utils.loaders import load_resources
 
 
 SAMPLE_USER_TEXT = (
@@ -18,6 +19,8 @@ def _profile_to_dict(profile) -> dict:
 
 
 def main() -> None:
+    resources = load_resources("data/resources.json")
+
     try:
         profile = interpret_student_profile(SAMPLE_USER_TEXT)
     except RuntimeError as exc:
@@ -25,7 +28,7 @@ def main() -> None:
 
     print(json.dumps(_profile_to_dict(profile), indent=2))
 
-    student = profile_to_student(profile)
+    student = profile_to_student(profile, resources=resources)
     print(student)
 
 
