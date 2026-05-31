@@ -1,4 +1,5 @@
 from src.algorithms.backtracking import build_backtracking_learning_path
+from src.algorithms.branch_and_bound import build_branch_and_bound_learning_path
 from src.algorithms.greedy import build_greedy_learning_path
 from src.evaluation.metrics import evaluate_learning_path
 from src.models.learning_path import LearningPath
@@ -12,7 +13,7 @@ from src.llm.evaluator import (
 )
 from src.utils.validators import validate_learning_path
 
-SUPPORTED_ALGORITHMS = {"greedy", "backtracking"}
+SUPPORTED_ALGORITHMS = {"greedy", "backtracking", "branch_and_bound"}
 
 
 def generate_path_for_student(
@@ -38,7 +39,7 @@ def generate_path_for_student_object(
     if algorithm not in SUPPORTED_ALGORITHMS:
         raise ValueError(
             f"Unsupported algorithm '{algorithm}'. "
-            "Supported algorithms are: greedy, backtracking."
+            "Supported algorithms are: greedy, backtracking, branch_and_bound."
         )
 
     source_resources = resources if resources is not None else list_resources()
@@ -101,8 +102,15 @@ def build_learning_path(
             use_precomputed_utility=use_precomputed_utility,
             min_utility_threshold=min_utility_threshold,
         )
+    if algorithm == "branch_and_bound":
+        return build_branch_and_bound_learning_path(
+            student,
+            resources,
+            use_precomputed_utility=use_precomputed_utility,
+            min_utility_threshold=min_utility_threshold,
+        )
 
     raise ValueError(
         f"Unsupported algorithm '{algorithm}'. "
-        "Supported algorithms are: greedy, backtracking."
+        "Supported algorithms are: greedy, backtracking, branch_and_bound."
     )

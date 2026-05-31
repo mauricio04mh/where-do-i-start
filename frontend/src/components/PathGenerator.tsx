@@ -87,6 +87,7 @@ function PathGenerator() {
           >
             <option value="greedy">greedy</option>
             <option value="backtracking">backtracking</option>
+            <option value="branch_and_bound">branch_and_bound</option>
           </select>
         </label>
 

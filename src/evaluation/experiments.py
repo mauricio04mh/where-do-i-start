@@ -16,13 +16,17 @@ from src.utils.validators import validate_learning_path
 CONFIGS = [
     {"algorithm": "greedy", "use_llm": False},
     {"algorithm": "backtracking", "use_llm": False},
+    {"algorithm": "branch_and_bound", "use_llm": False},
     {"algorithm": "greedy", "use_llm": True},
     {"algorithm": "backtracking", "use_llm": True},
+    {"algorithm": "branch_and_bound", "use_llm": True},
 ]
 CSV_COLUMNS = [
     "student_id",
     "algorithm",
     "use_llm",
+    "llm_provider",
+    "llm_model",
     "llm_candidate_top_k",
     "llm_score_weight",
     "total_duration",
@@ -91,6 +95,8 @@ def run_experiments(
                 algorithm=algorithm,
             )
             metrics["use_llm"] = use_llm
+            metrics["llm_provider"] = llm_config.provider if use_llm else ""
+            metrics["llm_model"] = _llm_model_name(llm_config) if use_llm else ""
             metrics["llm_candidate_top_k"] = (
                 llm_config.llm_candidate_top_k if use_llm else ""
             )
@@ -142,6 +148,15 @@ def _format_metrics_row(row: dict) -> dict:
             f"{row['llm_scoring_runtime_seconds']:.4f}"
         )
     return formatted
+
+
+def _llm_model_name(llm_config) -> str:
+    if llm_config.provider == "gemini":
+        return llm_config.gemini_model
+    if llm_config.provider == "ollama":
+        return llm_config.ollama_model
+
+    return ""
 
 
 def _write_generated_paths_json(path: Path, generated_paths: list[dict]) -> None:

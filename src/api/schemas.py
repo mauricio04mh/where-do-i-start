@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 Preference = Literal["practical", "theoretical", "balanced"]
-Algorithm = Literal["greedy", "backtracking"]
+Algorithm = Literal["greedy", "backtracking", "branch_and_bound"]
 
 
 class StudentBase(BaseModel):

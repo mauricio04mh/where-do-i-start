@@ -17,11 +17,18 @@ Generar una ruta con backtracking:
 python -m src.main --student student-chatbot-beginner --algorithm backtracking
 ```
 
+Generar una ruta con Branch and Bound:
+
+```bash
+python -m src.main --student student-llm-apps --algorithm branch_and_bound
+```
+
 Comparar algoritmos manualmente:
 
 ```bash
 python -m src.main --student student-chatbot-beginner --algorithm greedy
 python -m src.main --student student-chatbot-beginner --algorithm backtracking
+python -m src.main --student student-chatbot-beginner --algorithm branch_and_bound
 python -m src.main --run-experiments
 ```
 
@@ -126,10 +133,18 @@ Examples:
 ```bash
 python -m src.main --student student-llm-apps --algorithm greedy --use-llm
 python -m src.main --student student-llm-apps --algorithm backtracking --use-llm
+python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
 python -m src.main --student student-llm-apps --debug-scoring
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-top-k 10 --llm-score-weight 2.0
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-provider none
 ```
+
+### Branch and Bound
+
+Branch and Bound explores candidate learning paths like backtracking, but uses
+an optimistic upper bound based on fractional utility density to prune branches
+that cannot improve the best solution found so far. It is slower than Greedy but
+usually explores less than plain Backtracking.
 
 ## Ollama with Docker
 
@@ -177,6 +192,7 @@ Generate path:
 ```bash
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm greedy --use-llm
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm backtracking --use-llm
+docker compose exec backend python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
 ```
 
 ## Frontend
