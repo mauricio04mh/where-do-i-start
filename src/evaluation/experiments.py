@@ -3,15 +3,15 @@ import json
 import time
 from pathlib import Path
 
-from src.algorithms.greedy import build_greedy_learning_path
 from src.evaluation.metrics import evaluate_learning_path
 from src.models.learning_path import LearningPath
 from src.models.resource import Resource
 from src.models.student import Student
+from src.services.path_service import build_learning_path
 from src.utils.loaders import load_resources, load_students
 from src.utils.validators import validate_learning_path
 
-ALGORITHM = "greedy"
+ALGORITHMS = ["greedy", "backtracking"]
 CSV_COLUMNS = [
     "student_id",
     "algorithm",
@@ -41,27 +41,32 @@ def run_experiments(
     generated_paths: list[dict] = []
 
     for student in students:
-        start_time = time.perf_counter()
-        path = build_greedy_learning_path(student=student, resources=resources)
-        runtime_seconds = time.perf_counter() - start_time
+        for algorithm in ALGORITHMS:
+            start_time = time.perf_counter()
+            path = build_learning_path(
+                algorithm=algorithm,
+                student=student,
+                resources=resources,
+            )
+            runtime_seconds = time.perf_counter() - start_time
 
-        validation = validate_learning_path(path, student)
-        metrics = evaluate_learning_path(
-            path=path,
-            student=student,
-            algorithm=ALGORITHM,
-        )
-        metrics["runtime_seconds"] = runtime_seconds
-
-        metrics_rows.append(metrics)
-        generated_paths.append(
-            _serialize_generated_path(
+            validation = validate_learning_path(path, student)
+            metrics = evaluate_learning_path(
                 path=path,
                 student=student,
-                algorithm=ALGORITHM,
-                validation=validation,
+                algorithm=algorithm,
             )
-        )
+            metrics["runtime_seconds"] = runtime_seconds
+
+            metrics_rows.append(metrics)
+            generated_paths.append(
+                _serialize_generated_path(
+                    path=path,
+                    student=student,
+                    algorithm=algorithm,
+                    validation=validation,
+                )
+            )
 
     _write_metrics_csv(output_path / "experiment_results.csv", metrics_rows)
     _write_generated_paths_json(output_path / "generated_paths.json", generated_paths)

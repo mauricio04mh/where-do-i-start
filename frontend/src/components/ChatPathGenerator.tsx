@@ -59,6 +59,7 @@ function ChatPathGenerator() {
             onChange={(event) => setAlgorithm(event.target.value as Algorithm)}
           >
             <option value="greedy">greedy</option>
+            <option value="backtracking">backtracking</option>
           </select>
         </label>
 

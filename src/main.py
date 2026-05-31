@@ -1,9 +1,9 @@
 import argparse
 
-from src.algorithms.greedy import build_greedy_learning_path
 from src.models.learning_path import LearningPath
 from src.models.resource import Resource
 from src.models.student import Student
+from src.services.path_service import SUPPORTED_ALGORITHMS, build_learning_path
 from src.utils.loaders import get_student_by_id, load_resources, load_students
 from src.utils.validators import validate_learning_path
 
@@ -29,7 +29,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--algorithm",
         default="greedy",
-        help="Algorithm to use. Currently only 'greedy' is supported.",
+        choices=sorted(SUPPORTED_ALGORITHMS),
+        help="Algorithm to use.",
     )
     parser.add_argument(
         "--use-llm-profile",
@@ -39,7 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--run-experiments",
         action="store_true",
-        help="Run greedy for all students and save evaluation reports.",
+        help="Run all algorithms for all students and save evaluation reports.",
     )
     return parser.parse_args()
 
@@ -70,19 +71,6 @@ def select_student(
         return get_student_by_id(students, args.student)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
-
-
-def build_learning_path(
-    algorithm: str,
-    student: Student,
-    resources: list[Resource],
-) -> LearningPath:
-    if algorithm != "greedy":
-        raise SystemExit(
-            f"Unsupported algorithm '{algorithm}'. Currently only 'greedy' is supported."
-        )
-
-    return build_greedy_learning_path(student=student, resources=resources)
 
 
 def print_learning_path(
@@ -131,12 +119,6 @@ def main() -> None:
             students_path=args.students_path,
         )
         return
-
-    if args.algorithm != "greedy":
-        raise SystemExit(
-            f"Unsupported algorithm '{args.algorithm}'. "
-            "Currently only 'greedy' is supported."
-        )
 
     resources = load_resources(args.resources_path)
     students = load_students(args.students_path)

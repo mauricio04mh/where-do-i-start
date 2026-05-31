@@ -58,7 +58,7 @@ function PathGenerator() {
       <div className="section-heading">
         <div>
           <h2>Generar ruta</h2>
-          <p>Selecciona un estudiante y ejecuta el algoritmo greedy.</p>
+          <p>Selecciona un estudiante y ejecuta un algoritmo de rutas.</p>
         </div>
       </div>
 
@@ -86,6 +86,7 @@ function PathGenerator() {
             onChange={(event) => setAlgorithm(event.target.value as Algorithm)}
           >
             <option value="greedy">greedy</option>
+            <option value="backtracking">backtracking</option>
           </select>
         </label>
 

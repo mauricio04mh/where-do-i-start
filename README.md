@@ -9,6 +9,22 @@ relevancia semantica de las rutas. El algoritmo greedy combina utilidad por
 topico, coincidencia textual con el objetivo, prerrequisitos utiles,
 preferencia de aprendizaje y dificultad esperada.
 
+## CLI
+
+Generar una ruta con backtracking:
+
+```bash
+python -m src.main --student student-chatbot-beginner --algorithm backtracking
+```
+
+Comparar algoritmos manualmente:
+
+```bash
+python -m src.main --student student-chatbot-beginner --algorithm greedy
+python -m src.main --student student-chatbot-beginner --algorithm backtracking
+python -m src.main --run-experiments
+```
+
 ## API Backend
 
 Instalación:
@@ -39,7 +55,7 @@ Ejemplo POST /paths/generate:
 ```json
 {
   "student_id": "student-chatbot-beginner",
-  "algorithm": "greedy",
+  "algorithm": "backtracking",
   "use_llm": false
 }
 ```

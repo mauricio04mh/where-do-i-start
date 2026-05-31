@@ -12,41 +12,112 @@
         "topic": "Developer Tools",
         "duration_hours": 4,
         "difficulty": 1,
-        "utility": 11.0,
+        "utility": 13.0,
         "prerequisites": [],
         "type": "workshop"
       },
       {
         "position": 2,
-        "id": "javascript-essentials",
-        "title": "JavaScript Essentials",
-        "topic": "Web Development",
-        "duration_hours": 11,
-        "difficulty": 2,
-        "utility": 10.5,
+        "id": "docker-basics",
+        "title": "Docker Basics for Developers",
+        "topic": "Deployment",
+        "duration_hours": 8,
+        "difficulty": 3,
+        "utility": 29.75,
         "prerequisites": [
-          "web-html-css"
+          "command-line-basics"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 3,
+        "id": "deployment-fundamentals",
+        "title": "Deployment Fundamentals",
+        "topic": "Deployment",
+        "duration_hours": 8,
+        "difficulty": 3,
+        "utility": 28.25,
+        "prerequisites": [
+          "git-foundations",
+          "command-line-basics"
         ],
         "type": "course"
       },
       {
-        "position": 3,
-        "id": "frontend-mini-app",
-        "title": "Build a Frontend Mini App",
-        "topic": "Web Development",
-        "duration_hours": 14,
-        "difficulty": 3,
-        "utility": 15.0,
-        "prerequisites": [
-          "web-html-css",
-          "javascript-essentials",
-          "git-foundations"
-        ],
-        "type": "project"
+        "position": 4,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 3.5,
+        "prerequisites": [],
+        "type": "course"
       }
     ],
-    "total_duration": 29,
-    "total_utility": 36.5,
+    "total_duration": 28,
+    "total_utility": 74.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-web-builder",
+    "algorithm": "backtracking",
+    "goal": "Build and publish a small interactive portfolio application.",
+    "available_hours": 30,
+    "path": [
+      {
+        "position": 1,
+        "id": "command-line-basics",
+        "title": "Command Line Basics",
+        "topic": "Developer Tools",
+        "duration_hours": 4,
+        "difficulty": 1,
+        "utility": 13.0,
+        "prerequisites": [],
+        "type": "workshop"
+      },
+      {
+        "position": 2,
+        "id": "docker-basics",
+        "title": "Docker Basics for Developers",
+        "topic": "Deployment",
+        "duration_hours": 8,
+        "difficulty": 3,
+        "utility": 29.75,
+        "prerequisites": [
+          "command-line-basics"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 3,
+        "id": "deployment-fundamentals",
+        "title": "Deployment Fundamentals",
+        "topic": "Deployment",
+        "duration_hours": 8,
+        "difficulty": 3,
+        "utility": 28.25,
+        "prerequisites": [
+          "git-foundations",
+          "command-line-basics"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 4,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 3.5,
+        "prerequisites": [],
+        "type": "course"
+      }
+    ],
+    "total_duration": 28,
+    "total_utility": 74.5,
     "valid": true,
     "violations": []
   },
@@ -58,12 +129,64 @@
     "path": [
       {
         "position": 1,
+        "id": "database-design",
+        "title": "Database Design and Modeling",
+        "topic": "Databases",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 34.5,
+        "prerequisites": [
+          "databases-sql"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 2,
         "id": "data-analysis-pandas",
         "title": "Data Analysis with Pandas",
         "topic": "Data Science",
         "duration_hours": 13,
         "difficulty": 3,
-        "utility": 18.5,
+        "utility": 35.25,
+        "prerequisites": [
+          "python-basics",
+          "databases-sql"
+        ],
+        "type": "project"
+      },
+      {
+        "position": 3,
+        "id": "data-visualization",
+        "title": "Data Visualization with Python",
+        "topic": "Data Science",
+        "duration_hours": 8,
+        "difficulty": 3,
+        "utility": 30.0,
+        "prerequisites": [
+          "data-analysis-pandas"
+        ],
+        "type": "workshop"
+      }
+    ],
+    "total_duration": 30,
+    "total_utility": 99.75,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-data-analyst",
+    "algorithm": "backtracking",
+    "goal": "Learn enough programming and data skills to analyze CSV datasets independently.",
+    "available_hours": 35,
+    "path": [
+      {
+        "position": 1,
+        "id": "data-analysis-pandas",
+        "title": "Data Analysis with Pandas",
+        "topic": "Data Science",
+        "duration_hours": 13,
+        "difficulty": 3,
+        "utility": 35.25,
         "prerequisites": [
           "python-basics",
           "databases-sql"
@@ -72,16 +195,16 @@
       },
       {
         "position": 2,
-        "id": "data-visualization",
-        "title": "Data Visualization with Python",
-        "topic": "Data Science",
-        "duration_hours": 8,
+        "id": "database-design",
+        "title": "Database Design and Modeling",
+        "topic": "Databases",
+        "duration_hours": 9,
         "difficulty": 3,
-        "utility": 16.25,
+        "utility": 34.5,
         "prerequisites": [
-          "data-analysis-pandas"
+          "databases-sql"
         ],
-        "type": "workshop"
+        "type": "course"
       },
       {
         "position": 3,
@@ -90,24 +213,13 @@
         "topic": "Data Science",
         "duration_hours": 10,
         "difficulty": 3,
-        "utility": 16.25,
+        "utility": 33.0,
         "prerequisites": [],
         "type": "course"
-      },
-      {
-        "position": 4,
-        "id": "command-line-basics",
-        "title": "Command Line Basics",
-        "topic": "Developer Tools",
-        "duration_hours": 4,
-        "difficulty": 1,
-        "utility": 1.5,
-        "prerequisites": [],
-        "type": "workshop"
       }
     ],
-    "total_duration": 35,
-    "total_utility": 52.5,
+    "total_duration": 32,
+    "total_utility": 102.75,
     "valid": true,
     "violations": []
   },
@@ -119,12 +231,51 @@
     "path": [
       {
         "position": 1,
+        "id": "python-oop",
+        "title": "Object-Oriented Programming in Python",
+        "topic": "Programming",
+        "duration_hours": 9,
+        "difficulty": 2,
+        "utility": 19.25,
+        "prerequisites": [
+          "python-basics"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 2,
         "id": "algorithms-basics",
         "title": "Algorithms Basics",
         "topic": "Computer Science",
         "duration_hours": 12,
         "difficulty": 3,
-        "utility": 12.75,
+        "utility": 21.25,
+        "prerequisites": [
+          "python-basics",
+          "data-structures-intro"
+        ],
+        "type": "course"
+      }
+    ],
+    "total_duration": 21,
+    "total_utility": 40.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-cs-foundations",
+    "algorithm": "backtracking",
+    "goal": "Strengthen computer science fundamentals before taking advanced algorithms or AI courses.",
+    "available_hours": 24,
+    "path": [
+      {
+        "position": 1,
+        "id": "algorithms-basics",
+        "title": "Algorithms Basics",
+        "topic": "Computer Science",
+        "duration_hours": 12,
+        "difficulty": 3,
+        "utility": 21.25,
         "prerequisites": [
           "python-basics",
           "data-structures-intro"
@@ -133,32 +284,20 @@
       },
       {
         "position": 2,
-        "id": "ai-ethics-basics",
-        "title": "Responsible AI and Ethics Basics",
-        "topic": "Responsible AI",
-        "duration_hours": 4,
+        "id": "python-oop",
+        "title": "Object-Oriented Programming in Python",
+        "topic": "Programming",
+        "duration_hours": 9,
         "difficulty": 2,
-        "utility": 3.0,
-        "prerequisites": [],
-        "type": "reading"
-      },
-      {
-        "position": 3,
-        "id": "nlp-basics",
-        "title": "Natural Language Processing Basics",
-        "topic": "Natural Language Processing",
-        "duration_hours": 8,
-        "difficulty": 3,
-        "utility": 5.5,
+        "utility": 19.25,
         "prerequisites": [
-          "python-basics",
-          "data-structures-intro"
+          "python-basics"
         ],
         "type": "course"
       }
     ],
-    "total_duration": 24,
-    "total_utility": 21.25,
+    "total_duration": 21,
+    "total_utility": 40.5,
     "valid": true,
     "violations": []
   },
@@ -175,7 +314,7 @@
         "topic": "AI Chatbots",
         "duration_hours": 5,
         "difficulty": 2,
-        "utility": 10.75,
+        "utility": 28.5,
         "prerequisites": [],
         "type": "reading"
       },
@@ -186,7 +325,7 @@
         "topic": "AI Chatbots",
         "duration_hours": 8,
         "difficulty": 2,
-        "utility": 15.0,
+        "utility": 28.75,
         "prerequisites": [
           "python-basics",
           "chatbot-concepts"
@@ -200,24 +339,83 @@
         "topic": "Developer Tools",
         "duration_hours": 4,
         "difficulty": 1,
-        "utility": 4.75,
+        "utility": 3.25,
         "prerequisites": [],
         "type": "workshop"
       },
       {
         "position": 4,
-        "id": "git-foundations",
-        "title": "Git and GitHub Foundations",
-        "topic": "Developer Tools",
-        "duration_hours": 5,
-        "difficulty": 1,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
         "utility": 4.0,
+        "prerequisites": [],
+        "type": "course"
+      }
+    ],
+    "total_duration": 25,
+    "total_utility": 64.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-chatbot-beginner",
+    "algorithm": "backtracking",
+    "goal": "Learn how to build a simple AI chatbot for customer support.",
+    "available_hours": 25,
+    "path": [
+      {
+        "position": 1,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 28.5,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 2,
+        "id": "rule-based-chatbot-project",
+        "title": "Build a Rule-Based Chatbot",
+        "topic": "AI Chatbots",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 28.75,
+        "prerequisites": [
+          "python-basics",
+          "chatbot-concepts"
+        ],
+        "type": "project"
+      },
+      {
+        "position": 3,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 4.0,
+        "prerequisites": [],
+        "type": "course"
+      },
+      {
+        "position": 4,
+        "id": "command-line-basics",
+        "title": "Command Line Basics",
+        "topic": "Developer Tools",
+        "duration_hours": 4,
+        "difficulty": 1,
+        "utility": 3.25,
         "prerequisites": [],
         "type": "workshop"
       }
     ],
-    "total_duration": 22,
-    "total_utility": 34.5,
+    "total_duration": 25,
+    "total_utility": 64.5,
     "valid": true,
     "violations": []
   },
@@ -229,12 +427,116 @@
     "path": [
       {
         "position": 1,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 26.75,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 2,
         "id": "llm-fundamentals",
         "title": "Large Language Model Fundamentals",
         "topic": "LLMs",
         "duration_hours": 7,
         "difficulty": 3,
-        "utility": 10.5,
+        "utility": 28.75,
+        "prerequisites": [
+          "nlp-basics"
+        ],
+        "type": "reading"
+      },
+      {
+        "position": 3,
+        "id": "prompt-engineering",
+        "title": "Prompt Engineering for Practical AI Systems",
+        "topic": "LLMs",
+        "duration_hours": 6,
+        "difficulty": 3,
+        "utility": 29.25,
+        "prerequisites": [
+          "llm-fundamentals"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 4,
+        "id": "structured-llm-output",
+        "title": "Structured Output with LLMs",
+        "topic": "LLMs",
+        "duration_hours": 6,
+        "difficulty": 4,
+        "utility": 27.25,
+        "prerequisites": [
+          "prompt-engineering",
+          "api-design"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 5,
+        "id": "embeddings-intro",
+        "title": "Embeddings and Semantic Search",
+        "topic": "LLMs",
+        "duration_hours": 8,
+        "difficulty": 4,
+        "utility": 28.25,
+        "prerequisites": [
+          "llm-fundamentals",
+          "python-basics"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 6,
+        "id": "vector-databases",
+        "title": "Vector Databases for AI Applications",
+        "topic": "RAG",
+        "duration_hours": 7,
+        "difficulty": 4,
+        "utility": 31.0,
+        "prerequisites": [
+          "embeddings-intro",
+          "databases-sql"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 7,
+        "id": "text-preprocessing",
+        "title": "Text Preprocessing Workshop",
+        "topic": "Natural Language Processing",
+        "duration_hours": 6,
+        "difficulty": 3,
+        "utility": 12.0,
+        "prerequisites": [
+          "nlp-basics"
+        ],
+        "type": "workshop"
+      }
+    ],
+    "total_duration": 45,
+    "total_utility": 183.25,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-rag-intermediate",
+    "algorithm": "backtracking",
+    "goal": "Build a RAG system that answers questions from company documents.",
+    "available_hours": 45,
+    "path": [
+      {
+        "position": 1,
+        "id": "llm-fundamentals",
+        "title": "Large Language Model Fundamentals",
+        "topic": "LLMs",
+        "duration_hours": 7,
+        "difficulty": 3,
+        "utility": 28.75,
         "prerequisites": [
           "nlp-basics"
         ],
@@ -247,7 +549,7 @@
         "topic": "LLMs",
         "duration_hours": 8,
         "difficulty": 4,
-        "utility": 10.5,
+        "utility": 28.25,
         "prerequisites": [
           "llm-fundamentals",
           "python-basics"
@@ -261,7 +563,7 @@
         "topic": "RAG",
         "duration_hours": 7,
         "difficulty": 4,
-        "utility": 18.5,
+        "utility": 31.0,
         "prerequisites": [
           "embeddings-intro",
           "databases-sql"
@@ -275,7 +577,7 @@
         "topic": "LLMs",
         "duration_hours": 6,
         "difficulty": 3,
-        "utility": 12.0,
+        "utility": 29.25,
         "prerequisites": [
           "llm-fundamentals"
         ],
@@ -288,7 +590,7 @@
         "topic": "LLMs",
         "duration_hours": 6,
         "difficulty": 4,
-        "utility": 13.5,
+        "utility": 27.25,
         "prerequisites": [
           "prompt-engineering",
           "api-design"
@@ -297,22 +599,31 @@
       },
       {
         "position": 6,
-        "id": "rag-fundamentals",
-        "title": "Retrieval-Augmented Generation Fundamentals",
-        "topic": "RAG",
-        "duration_hours": 10,
-        "difficulty": 4,
-        "utility": 18.75,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 26.75,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 7,
+        "id": "text-preprocessing",
+        "title": "Text Preprocessing Workshop",
+        "topic": "Natural Language Processing",
+        "duration_hours": 6,
+        "difficulty": 3,
+        "utility": 12.0,
         "prerequisites": [
-          "prompt-engineering",
-          "embeddings-intro",
-          "vector-databases"
+          "nlp-basics"
         ],
-        "type": "project"
+        "type": "workshop"
       }
     ],
-    "total_duration": 44,
-    "total_utility": 83.75,
+    "total_duration": 45,
+    "total_utility": 183.25,
     "valid": true,
     "violations": []
   },
@@ -324,72 +635,97 @@
     "path": [
       {
         "position": 1,
-        "id": "nlp-basics",
-        "title": "Natural Language Processing Basics",
-        "topic": "Natural Language Processing",
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
         "duration_hours": 8,
-        "difficulty": 3,
-        "utility": 3.5,
-        "prerequisites": [
-          "python-basics",
-          "data-structures-intro"
-        ],
+        "difficulty": 2,
+        "utility": 13.0,
+        "prerequisites": [],
         "type": "course"
       },
       {
         "position": 2,
-        "id": "llm-fundamentals",
-        "title": "Large Language Model Fundamentals",
-        "topic": "LLMs",
-        "duration_hours": 7,
+        "id": "data-analysis-pandas",
+        "title": "Data Analysis with Pandas",
+        "topic": "Data Science",
+        "duration_hours": 13,
         "difficulty": 3,
-        "utility": 13.5,
+        "utility": 32.5,
         "prerequisites": [
-          "nlp-basics"
+          "python-basics",
+          "databases-sql"
         ],
-        "type": "reading"
+        "type": "project"
       },
       {
         "position": 3,
-        "id": "embeddings-intro",
-        "title": "Embeddings and Semantic Search",
-        "topic": "LLMs",
+        "id": "data-visualization",
+        "title": "Data Visualization with Python",
+        "topic": "Data Science",
         "duration_hours": 8,
-        "difficulty": 4,
-        "utility": 13.5,
+        "difficulty": 3,
+        "utility": 29.0,
         "prerequisites": [
-          "llm-fundamentals",
-          "python-basics"
+          "data-analysis-pandas"
         ],
+        "type": "workshop"
+      }
+    ],
+    "total_duration": 29,
+    "total_utility": 74.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-ml-theory",
+    "algorithm": "backtracking",
+    "goal": "Understand the theoretical foundations of machine learning and model evaluation.",
+    "available_hours": 34,
+    "path": [
+      {
+        "position": 1,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 13.0,
+        "prerequisites": [],
         "type": "course"
       },
       {
-        "position": 4,
-        "id": "prompt-engineering",
-        "title": "Prompt Engineering for Practical AI Systems",
-        "topic": "LLMs",
-        "duration_hours": 6,
+        "position": 2,
+        "id": "data-analysis-pandas",
+        "title": "Data Analysis with Pandas",
+        "topic": "Data Science",
+        "duration_hours": 13,
         "difficulty": 3,
-        "utility": 9.75,
+        "utility": 32.5,
         "prerequisites": [
-          "llm-fundamentals"
+          "python-basics",
+          "databases-sql"
         ],
-        "type": "workshop"
+        "type": "project"
       },
       {
-        "position": 5,
-        "id": "ai-ethics-basics",
-        "title": "Responsible AI and Ethics Basics",
-        "topic": "Responsible AI",
-        "duration_hours": 4,
-        "difficulty": 2,
-        "utility": 1.0,
-        "prerequisites": [],
-        "type": "reading"
+        "position": 3,
+        "id": "machine-learning-intro",
+        "title": "Introduction to Machine Learning",
+        "topic": "Machine Learning",
+        "duration_hours": 12,
+        "difficulty": 4,
+        "utility": 31.75,
+        "prerequisites": [
+          "python-basics",
+          "data-analysis-pandas",
+          "statistics-basics"
+        ],
+        "type": "course"
       }
     ],
     "total_duration": 33,
-    "total_utility": 41.25,
+    "total_utility": 77.25,
     "valid": true,
     "violations": []
   },
@@ -406,7 +742,7 @@
         "topic": "Databases",
         "duration_hours": 8,
         "difficulty": 2,
-        "utility": 16.25,
+        "utility": 34.75,
         "prerequisites": [],
         "type": "course"
       },
@@ -417,7 +753,7 @@
         "topic": "Backend Development",
         "duration_hours": 10,
         "difficulty": 3,
-        "utility": 19.25,
+        "utility": 37.25,
         "prerequisites": [
           "python-basics",
           "databases-sql"
@@ -431,7 +767,7 @@
         "topic": "Backend Development",
         "duration_hours": 7,
         "difficulty": 4,
-        "utility": 17.75,
+        "utility": 33.25,
         "prerequisites": [
           "api-design",
           "databases-sql"
@@ -440,7 +776,58 @@
       }
     ],
     "total_duration": 25,
-    "total_utility": 53.25,
+    "total_utility": 105.25,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-web-backend",
+    "algorithm": "backtracking",
+    "goal": "Learn backend development to build APIs connected to databases.",
+    "available_hours": 28,
+    "path": [
+      {
+        "position": 1,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 34.75,
+        "prerequisites": [],
+        "type": "course"
+      },
+      {
+        "position": 2,
+        "id": "api-design",
+        "title": "REST API Design",
+        "topic": "Backend Development",
+        "duration_hours": 10,
+        "difficulty": 3,
+        "utility": 37.25,
+        "prerequisites": [
+          "python-basics",
+          "databases-sql"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 3,
+        "id": "fastapi-basics",
+        "title": "FastAPI Basics",
+        "topic": "Backend Development",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 34.25,
+        "prerequisites": [
+          "python-basics",
+          "api-design"
+        ],
+        "type": "project"
+      }
+    ],
+    "total_duration": 27,
+    "total_utility": 106.25,
     "valid": true,
     "violations": []
   },
@@ -457,7 +844,7 @@
         "topic": "Responsible AI",
         "duration_hours": 4,
         "difficulty": 2,
-        "utility": 13.0,
+        "utility": 29.75,
         "prerequisites": [],
         "type": "reading"
       },
@@ -468,7 +855,7 @@
         "topic": "AI Chatbots",
         "duration_hours": 5,
         "difficulty": 2,
-        "utility": 15.25,
+        "utility": 32.0,
         "prerequisites": [],
         "type": "reading"
       },
@@ -479,13 +866,58 @@
         "topic": "Databases",
         "duration_hours": 8,
         "difficulty": 2,
-        "utility": 5.75,
+        "utility": 6.75,
         "prerequisites": [],
         "type": "course"
       }
     ],
     "total_duration": 17,
-    "total_utility": 34.0,
+    "total_utility": 68.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-ai-product",
+    "algorithm": "backtracking",
+    "goal": "Learn enough AI concepts to design safe and useful chatbot products.",
+    "available_hours": 18,
+    "path": [
+      {
+        "position": 1,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 32.0,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 2,
+        "id": "ai-ethics-basics",
+        "title": "Responsible AI and Ethics Basics",
+        "topic": "Responsible AI",
+        "duration_hours": 4,
+        "difficulty": 2,
+        "utility": 29.75,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 3,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 6.75,
+        "prerequisites": [],
+        "type": "course"
+      }
+    ],
+    "total_duration": 17,
+    "total_utility": 68.5,
     "valid": true,
     "violations": []
   },
@@ -515,7 +947,7 @@
         "topic": "Natural Language Processing",
         "duration_hours": 8,
         "difficulty": 3,
-        "utility": 0.1,
+        "utility": 4.0,
         "prerequisites": [
           "python-basics",
           "data-structures-intro"
@@ -529,7 +961,7 @@
         "topic": "LLMs",
         "duration_hours": 7,
         "difficulty": 3,
-        "utility": 9.0,
+        "utility": 28.0,
         "prerequisites": [
           "nlp-basics"
         ],
@@ -542,7 +974,7 @@
         "topic": "LLMs",
         "duration_hours": 6,
         "difficulty": 3,
-        "utility": 15.75,
+        "utility": 32.5,
         "prerequisites": [
           "llm-fundamentals"
         ],
@@ -555,7 +987,7 @@
         "topic": "LLMs",
         "duration_hours": 6,
         "difficulty": 4,
-        "utility": 15.75,
+        "utility": 30.25,
         "prerequisites": [
           "prompt-engineering",
           "api-design"
@@ -564,7 +996,82 @@
       }
     ],
     "total_duration": 37,
-    "total_utility": 42.1,
+    "total_utility": 96.25,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-llm-apps",
+    "algorithm": "backtracking",
+    "goal": "Build practical applications using LLM APIs, structured outputs, and prompt engineering.",
+    "available_hours": 38,
+    "path": [
+      {
+        "position": 1,
+        "id": "fastapi-basics",
+        "title": "FastAPI Basics",
+        "topic": "Backend Development",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 36.25,
+        "prerequisites": [
+          "python-basics",
+          "api-design"
+        ],
+        "type": "project"
+      },
+      {
+        "position": 2,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 18.0,
+        "prerequisites": [],
+        "type": "course"
+      },
+      {
+        "position": 3,
+        "id": "authentication-basics",
+        "title": "Authentication Basics for Web APIs",
+        "topic": "Backend Development",
+        "duration_hours": 7,
+        "difficulty": 4,
+        "utility": 35.75,
+        "prerequisites": [
+          "api-design",
+          "databases-sql"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 4,
+        "id": "database-design",
+        "title": "Database Design and Modeling",
+        "topic": "Databases",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 16.25,
+        "prerequisites": [
+          "databases-sql"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 5,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 11.0,
+        "prerequisites": [],
+        "type": "reading"
+      }
+    ],
+    "total_duration": 38,
+    "total_utility": 117.25,
     "valid": true,
     "violations": []
   },
@@ -576,12 +1083,48 @@
     "path": [
       {
         "position": 1,
+        "id": "database-design",
+        "title": "Database Design and Modeling",
+        "topic": "Databases",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 34.5,
+        "prerequisites": [
+          "databases-sql"
+        ],
+        "type": "course"
+      },
+      {
+        "position": 2,
+        "id": "statistics-basics",
+        "title": "Statistics Basics for Data Science",
+        "topic": "Data Science",
+        "duration_hours": 10,
+        "difficulty": 3,
+        "utility": 33.0,
+        "prerequisites": [],
+        "type": "course"
+      }
+    ],
+    "total_duration": 19,
+    "total_utility": 67.5,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-data-visualizer",
+    "algorithm": "backtracking",
+    "goal": "Analyze datasets and create clear visualizations for reports and presentations.",
+    "available_hours": 22,
+    "path": [
+      {
+        "position": 1,
         "id": "data-analysis-pandas",
         "title": "Data Analysis with Pandas",
         "topic": "Data Science",
         "duration_hours": 13,
         "difficulty": 3,
-        "utility": 17.75,
+        "utility": 35.25,
         "prerequisites": [
           "python-basics",
           "databases-sql"
@@ -590,20 +1133,20 @@
       },
       {
         "position": 2,
-        "id": "data-visualization",
-        "title": "Data Visualization with Python",
-        "topic": "Data Science",
-        "duration_hours": 8,
+        "id": "database-design",
+        "title": "Database Design and Modeling",
+        "topic": "Databases",
+        "duration_hours": 9,
         "difficulty": 3,
-        "utility": 15.5,
+        "utility": 34.5,
         "prerequisites": [
-          "data-analysis-pandas"
+          "databases-sql"
         ],
-        "type": "workshop"
+        "type": "course"
       }
     ],
-    "total_duration": 21,
-    "total_utility": 33.25,
+    "total_duration": 22,
+    "total_utility": 69.75,
     "valid": true,
     "violations": []
   },
@@ -615,23 +1158,34 @@
     "path": [
       {
         "position": 1,
+        "id": "chatbot-concepts",
+        "title": "Chatbot Design Concepts",
+        "topic": "AI Chatbots",
+        "duration_hours": 5,
+        "difficulty": 2,
+        "utility": 27.5,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 2,
         "id": "databases-sql",
         "title": "SQL and Relational Databases",
         "topic": "Databases",
         "duration_hours": 8,
         "difficulty": 2,
-        "utility": 8.75,
+        "utility": 18.75,
         "prerequisites": [],
         "type": "course"
       },
       {
-        "position": 2,
+        "position": 3,
         "id": "authentication-basics",
         "title": "Authentication Basics for Web APIs",
         "topic": "Backend Development",
         "duration_hours": 7,
         "difficulty": 4,
-        "utility": 14.25,
+        "utility": 35.0,
         "prerequisites": [
           "api-design",
           "databases-sql"
@@ -639,43 +1193,84 @@
         "type": "workshop"
       },
       {
+        "position": 4,
+        "id": "fastapi-basics",
+        "title": "FastAPI Basics",
+        "topic": "Backend Development",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 35.5,
+        "prerequisites": [
+          "python-basics",
+          "api-design"
+        ],
+        "type": "project"
+      }
+    ],
+    "total_duration": 29,
+    "total_utility": 116.75,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-deployment-focused",
+    "algorithm": "backtracking",
+    "goal": "Deploy a chatbot backend service using containers and basic production configuration.",
+    "available_hours": 32,
+    "path": [
+      {
+        "position": 1,
+        "id": "fastapi-basics",
+        "title": "FastAPI Basics",
+        "topic": "Backend Development",
+        "duration_hours": 9,
+        "difficulty": 3,
+        "utility": 35.5,
+        "prerequisites": [
+          "python-basics",
+          "api-design"
+        ],
+        "type": "project"
+      },
+      {
+        "position": 2,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 18.75,
+        "prerequisites": [],
+        "type": "course"
+      },
+      {
         "position": 3,
+        "id": "authentication-basics",
+        "title": "Authentication Basics for Web APIs",
+        "topic": "Backend Development",
+        "duration_hours": 7,
+        "difficulty": 4,
+        "utility": 35.0,
+        "prerequisites": [
+          "api-design",
+          "databases-sql"
+        ],
+        "type": "workshop"
+      },
+      {
+        "position": 4,
         "id": "chatbot-concepts",
         "title": "Chatbot Design Concepts",
         "topic": "AI Chatbots",
         "duration_hours": 5,
         "difficulty": 2,
-        "utility": 8.75,
+        "utility": 27.5,
         "prerequisites": [],
         "type": "reading"
-      },
-      {
-        "position": 4,
-        "id": "command-line-basics",
-        "title": "Command Line Basics",
-        "topic": "Developer Tools",
-        "duration_hours": 4,
-        "difficulty": 1,
-        "utility": 3.0,
-        "prerequisites": [],
-        "type": "workshop"
-      },
-      {
-        "position": 5,
-        "id": "docker-basics",
-        "title": "Docker Basics for Developers",
-        "topic": "Deployment",
-        "duration_hours": 8,
-        "difficulty": 3,
-        "utility": 12.75,
-        "prerequisites": [
-          "command-line-basics"
-        ],
-        "type": "workshop"
       }
     ],
-    "total_duration": 32,
-    "total_utility": 47.5,
+    "total_duration": 29,
+    "total_utility": 116.75,
     "valid": true,
     "violations": []
   },
@@ -692,7 +1287,7 @@
         "topic": "Responsible AI",
         "duration_hours": 4,
         "difficulty": 2,
-        "utility": 19.25,
+        "utility": 30.75,
         "prerequisites": [],
         "type": "reading"
       },
@@ -703,7 +1298,7 @@
         "topic": "Databases",
         "duration_hours": 8,
         "difficulty": 2,
-        "utility": 12.0,
+        "utility": 13.5,
         "prerequisites": [],
         "type": "course"
       },
@@ -714,7 +1309,7 @@
         "topic": "Responsible AI",
         "duration_hours": 6,
         "difficulty": 3,
-        "utility": 21.0,
+        "utility": 29.0,
         "prerequisites": [
           "ai-ethics-basics",
           "databases-sql"
@@ -723,7 +1318,55 @@
       }
     ],
     "total_duration": 18,
-    "total_utility": 52.25,
+    "total_utility": 73.25,
+    "valid": true,
+    "violations": []
+  },
+  {
+    "student_id": "student-responsible-ai",
+    "algorithm": "backtracking",
+    "goal": "Understand responsible AI, privacy, and risks before deploying chatbot systems.",
+    "available_hours": 20,
+    "path": [
+      {
+        "position": 1,
+        "id": "ai-ethics-basics",
+        "title": "Responsible AI and Ethics Basics",
+        "topic": "Responsible AI",
+        "duration_hours": 4,
+        "difficulty": 2,
+        "utility": 30.75,
+        "prerequisites": [],
+        "type": "reading"
+      },
+      {
+        "position": 2,
+        "id": "databases-sql",
+        "title": "SQL and Relational Databases",
+        "topic": "Databases",
+        "duration_hours": 8,
+        "difficulty": 2,
+        "utility": 13.5,
+        "prerequisites": [],
+        "type": "course"
+      },
+      {
+        "position": 3,
+        "id": "privacy-and-data-handling",
+        "title": "Privacy and Data Handling for AI Systems",
+        "topic": "Responsible AI",
+        "duration_hours": 6,
+        "difficulty": 3,
+        "utility": 29.0,
+        "prerequisites": [
+          "ai-ethics-basics",
+          "databases-sql"
+        ],
+        "type": "course"
+      }
+    ],
+    "total_duration": 18,
+    "total_utility": 73.25,
     "valid": true,
     "violations": []
   }
