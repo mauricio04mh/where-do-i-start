@@ -9,6 +9,7 @@ const samplePrompt =
 function ChatPathGenerator() {
   const [message, setMessage] = useState(samplePrompt);
   const [algorithm, setAlgorithm] = useState<Algorithm>("greedy");
+  const [useLlm, setUseLlm] = useState(false);
   const [result, setResult] = useState<ChatAskResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -20,7 +21,7 @@ function ChatPathGenerator() {
     setResult(null);
 
     try {
-      setResult(await askChat({ message, algorithm }));
+      setResult(await askChat({ message, algorithm, use_llm: useLlm }));
     } catch (err) {
       setError(getMessage(err));
     } finally {
@@ -61,6 +62,17 @@ function ChatPathGenerator() {
             <option value="greedy">greedy</option>
             <option value="backtracking">backtracking</option>
           </select>
+        </label>
+
+        <label className="check-row full-width">
+          <input
+            checked={useLlm}
+            type="checkbox"
+            onChange={(event) => setUseLlm(event.target.checked)}
+          />
+          <span>
+            Usar LLM para reordenar los mejores candidatos por relevancia semantica.
+          </span>
         </label>
 
         <div className="form-actions">
@@ -110,6 +122,7 @@ function ChatPathGenerator() {
               path: result.path,
               metrics: result.metrics,
               validation: result.validation,
+              llm_debug: result.llm_debug,
             }}
           />
         </>

@@ -30,4 +30,5 @@ def test_generate_path_response_contains_expected_keys() -> None:
         "path",
         "metrics",
         "validation",
+        "llm_debug",
     }

@@ -1,9 +1,17 @@
 import argparse
 
+from src.llm.evaluator import (
+    build_llm_scored_resources,
+    build_rule_based_scoring_debug,
+)
 from src.models.learning_path import LearningPath
 from src.models.resource import Resource
 from src.models.student import Student
-from src.services.path_service import SUPPORTED_ALGORITHMS, build_learning_path
+from src.services.path_service import (
+    SUPPORTED_ALGORITHMS,
+    build_learning_path,
+    generate_path_for_student_object,
+)
 from src.utils.loaders import get_student_by_id, load_resources, load_students
 from src.utils.validators import validate_learning_path
 
@@ -36,6 +44,26 @@ def parse_args() -> argparse.Namespace:
         "--use-llm-profile",
         action="store_true",
         help="Build the student from SAMPLE_USER_TEXT using the LLM profile flow.",
+    )
+    parser.add_argument(
+        "--use-llm",
+        action="store_true",
+        help="Use Gemini to score top-K rule-based candidates before path generation.",
+    )
+    parser.add_argument(
+        "--debug-scoring",
+        action="store_true",
+        help="Print rule-based and optional LLM scoring rankings without generating a path.",
+    )
+    parser.add_argument(
+        "--llm-top-k",
+        type=int,
+        help="Override LLM_CANDIDATE_TOP_K for this execution.",
+    )
+    parser.add_argument(
+        "--llm-score-weight",
+        type=float,
+        help="Override LLM_SCORE_WEIGHT for this execution.",
     )
     parser.add_argument(
         "--run-experiments",
@@ -109,6 +137,49 @@ def print_learning_path(
         print("Violations: none")
 
 
+def print_scoring_debug(debug: dict, include_llm: bool) -> None:
+    print()
+    print(f"Student: {debug['student']['id']}")
+    print(f"Top K: {debug['top_k']}")
+    print(f"Score weight: {debug['score_weight']}")
+    print()
+    print("Rule-based ranking:")
+    for resource in debug["rule_based_ranking"]:
+        print(
+            f"{resource['rank']}. {resource['title']} "
+            f"({resource['id']}) - utility {resource['utility']:.2f}"
+        )
+
+    if not include_llm:
+        return
+
+    print()
+    print("Top K candidates sent to LLM:")
+    for resource in debug["rule_based_ranking"][: debug["top_k"]]:
+        print(
+            f"{resource['rank']}. {resource['title']} "
+            f"({resource['id']}) - utility {resource['utility']:.2f}"
+        )
+
+    print()
+    print("LLM scores:")
+    for score in debug["llm_scores"]:
+        print(
+            f"- {score['resource_id']}: {score['relevance_score']} "
+            f"({score['reason']})"
+        )
+
+    print()
+    print("Combined ranking:")
+    for resource in debug["combined_ranking"]:
+        print(
+            f"{resource['rank']}. {resource['title']} ({resource['id']}) - "
+            f"rule {resource['rule_based_utility']:.2f}, "
+            f"llm {resource['llm_relevance_score']}, "
+            f"final {resource['final_utility']:.2f}"
+        )
+
+
 def main() -> None:
     args = parse_args()
     if args.run_experiments:
@@ -127,8 +198,47 @@ def main() -> None:
     print(f"Loaded {len(students)} students.")
 
     student = select_student(args=args, students=students, resources=resources)
-    path = build_learning_path(args.algorithm, student=student, resources=resources)
-    validation = validate_learning_path(path, student)
+
+    if args.debug_scoring:
+        try:
+            if args.use_llm:
+                _, debug = build_llm_scored_resources(
+                    student=student,
+                    resources=resources,
+                    top_k=args.llm_top_k,
+                    score_weight=args.llm_score_weight,
+                )
+            else:
+                debug = build_rule_based_scoring_debug(
+                    student=student,
+                    resources=resources,
+                    top_k=args.llm_top_k,
+                    score_weight=args.llm_score_weight,
+                )
+        except RuntimeError as exc:
+            raise SystemExit(str(exc)) from exc
+
+        print_scoring_debug(debug, include_llm=args.use_llm)
+        return
+
+    if args.use_llm:
+        try:
+            result = generate_path_for_student_object(
+                student=student,
+                algorithm=args.algorithm,
+                use_llm=True,
+                llm_top_k=args.llm_top_k,
+                llm_score_weight=args.llm_score_weight,
+                resources=resources,
+            )
+        except RuntimeError as exc:
+            raise SystemExit(str(exc)) from exc
+
+        path = LearningPath(resources=result["path"])
+        validation = result["validation"]
+    else:
+        path = build_learning_path(args.algorithm, student=student, resources=resources)
+        validation = validate_learning_path(path, student)
 
     print_learning_path(
         path=path,

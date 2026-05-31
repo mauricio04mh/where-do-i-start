@@ -91,11 +91,13 @@ class GeneratePathResponse(BaseModel):
     path: list[PathResourceResponse]
     metrics: dict
     validation: dict
+    llm_debug: dict | None = None
 
 
 class ChatAskRequest(BaseModel):
     message: str
     algorithm: Algorithm = "greedy"
+    use_llm: bool = False
 
 
 class ChatAskResponse(BaseModel):
@@ -105,3 +107,4 @@ class ChatAskResponse(BaseModel):
     path: list[PathResourceResponse]
     metrics: dict
     validation: dict
+    llm_debug: dict | None = None

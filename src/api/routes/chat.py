@@ -22,6 +22,7 @@ def ask_chat(payload: ChatAskRequest) -> dict:
         result = generate_path_for_student_object(
             generated_student,
             payload.algorithm,
+            use_llm=payload.use_llm,
         )
     except RuntimeError as exc:
         raise HTTPException(
@@ -38,6 +39,7 @@ def ask_chat(payload: ChatAskRequest) -> dict:
         "path": [asdict(resource) for resource in result["path"]],
         "metrics": result["metrics"],
         "validation": result["validation"],
+        "llm_debug": result.get("llm_debug"),
     }
 
 

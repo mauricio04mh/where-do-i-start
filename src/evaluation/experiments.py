@@ -4,6 +4,8 @@ import time
 from pathlib import Path
 
 from src.evaluation.metrics import evaluate_learning_path
+from src.llm.config import load_llm_config
+from src.llm.evaluator import build_llm_scored_resources
 from src.models.learning_path import LearningPath
 from src.models.resource import Resource
 from src.models.student import Student
@@ -11,10 +13,18 @@ from src.services.path_service import build_learning_path
 from src.utils.loaders import load_resources, load_students
 from src.utils.validators import validate_learning_path
 
-ALGORITHMS = ["greedy", "backtracking"]
+CONFIGS = [
+    {"algorithm": "greedy", "use_llm": False},
+    {"algorithm": "backtracking", "use_llm": False},
+    {"algorithm": "greedy", "use_llm": True},
+    {"algorithm": "backtracking", "use_llm": True},
+]
 CSV_COLUMNS = [
     "student_id",
     "algorithm",
+    "use_llm",
+    "llm_candidate_top_k",
+    "llm_score_weight",
     "total_duration",
     "available_hours",
     "time_usage_ratio",
@@ -24,6 +34,7 @@ CSV_COLUMNS = [
     "violation_count",
     "coverage_score",
     "runtime_seconds",
+    "llm_scoring_runtime_seconds",
 ]
 
 
@@ -39,14 +50,34 @@ def run_experiments(
 
     metrics_rows: list[dict] = []
     generated_paths: list[dict] = []
+    llm_config = load_llm_config()
 
     for student in students:
-        for algorithm in ALGORITHMS:
+        llm_resources: list[Resource] | None = None
+        llm_debug: dict | None = None
+        llm_scoring_runtime_seconds = 0.0
+
+        if any(config["use_llm"] for config in CONFIGS):
+            start_scoring = time.perf_counter()
+            llm_resources, llm_debug = build_llm_scored_resources(
+                student=student,
+                resources=resources,
+            )
+            llm_scoring_runtime_seconds = time.perf_counter() - start_scoring
+
+        for config in CONFIGS:
+            algorithm = str(config["algorithm"])
+            use_llm = bool(config["use_llm"])
+            path_resources = llm_resources if use_llm else resources
+            if path_resources is None:
+                raise RuntimeError("LLM resources were not prepared for LLM experiment.")
+
             start_time = time.perf_counter()
             path = build_learning_path(
                 algorithm=algorithm,
                 student=student,
-                resources=resources,
+                resources=path_resources,
+                use_precomputed_utility=use_llm,
             )
             runtime_seconds = time.perf_counter() - start_time
 
@@ -56,7 +87,17 @@ def run_experiments(
                 student=student,
                 algorithm=algorithm,
             )
+            metrics["use_llm"] = use_llm
+            metrics["llm_candidate_top_k"] = (
+                llm_config.llm_candidate_top_k if use_llm else ""
+            )
+            metrics["llm_score_weight"] = (
+                llm_config.llm_score_weight if use_llm else ""
+            )
             metrics["runtime_seconds"] = runtime_seconds
+            metrics["llm_scoring_runtime_seconds"] = (
+                llm_scoring_runtime_seconds if use_llm else ""
+            )
 
             metrics_rows.append(metrics)
             generated_paths.append(
@@ -64,7 +105,9 @@ def run_experiments(
                     path=path,
                     student=student,
                     algorithm=algorithm,
+                    use_llm=use_llm,
                     validation=validation,
+                    llm_debug=llm_debug if use_llm else None,
                 )
             )
 
@@ -91,6 +134,10 @@ def _format_metrics_row(row: dict) -> dict:
     formatted["valid"] = str(row["valid"]).lower()
     formatted["coverage_score"] = f"{row['coverage_score']:.4f}"
     formatted["runtime_seconds"] = f"{row['runtime_seconds']:.4f}"
+    if row["llm_scoring_runtime_seconds"] != "":
+        formatted["llm_scoring_runtime_seconds"] = (
+            f"{row['llm_scoring_runtime_seconds']:.4f}"
+        )
     return formatted
 
 
@@ -107,6 +154,7 @@ def _write_generated_paths_txt(path: Path, generated_paths: list[dict]) -> None:
             file.write(f"{separator}\n")
             file.write(f"Student: {generated_path['student_id']}\n")
             file.write(f"Algorithm: {generated_path['algorithm']}\n")
+            file.write(f"Use LLM: {generated_path['use_llm']}\n")
             file.write(f"Goal: {generated_path['goal']}\n")
             file.write(
                 f"Available time: {generated_path['available_hours']} hours\n\n"
@@ -140,11 +188,14 @@ def _serialize_generated_path(
     path: LearningPath,
     student: Student,
     algorithm: str,
+    use_llm: bool,
     validation: dict,
+    llm_debug: dict | None,
 ) -> dict:
     return {
         "student_id": student.id,
         "algorithm": algorithm,
+        "use_llm": use_llm,
         "goal": student.goal,
         "available_hours": student.available_hours,
         "path": [
@@ -155,6 +206,7 @@ def _serialize_generated_path(
         "total_utility": path.total_utility,
         "valid": validation["is_valid"],
         "violations": validation["violations"],
+        "llm_debug": llm_debug,
     }
 
 

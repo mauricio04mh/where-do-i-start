@@ -10,3 +10,13 @@ class StudentProfileExtraction(BaseModel):
     preference: Literal["practical", "theoretical", "balanced"]
     target_topics: list[str]
     constraints: list[str]
+
+
+class ResourceRelevanceScore(BaseModel):
+    resource_id: str
+    relevance_score: int = Field(ge=1, le=10)
+    reason: str
+
+
+class ResourceRelevanceScores(BaseModel):
+    scores: list[ResourceRelevanceScore]

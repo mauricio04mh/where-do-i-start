@@ -6,6 +6,7 @@ export type PathResultData = {
   path: PathResource[];
   metrics: Record<string, unknown>;
   validation: RouteValidation;
+  llm_debug?: Record<string, unknown> | null;
 };
 
 type PathResultProps = {
@@ -133,6 +134,17 @@ function PathResult({ result }: PathResultProps) {
           </ul>
         )}
       </section>
+
+      {result.llm_debug && (
+        <section className="block">
+          <details>
+            <summary>LLM scoring debug</summary>
+            <pre className="json-box">
+              {JSON.stringify(result.llm_debug, null, 2)}
+            </pre>
+          </details>
+        </section>
+      )}
     </section>
   );
 }

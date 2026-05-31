@@ -96,7 +96,9 @@ function PathGenerator() {
             type="checkbox"
             onChange={(event) => setUseLlm(event.target.checked)}
           />
-          <span>use_llm activo. Por ahora el backend lo ignora para el scoring.</span>
+          <span>
+            Usar LLM para reordenar los mejores candidatos por relevancia semantica.
+          </span>
         </label>
 
         <div className="form-actions">

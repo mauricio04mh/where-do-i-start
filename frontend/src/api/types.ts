@@ -65,11 +65,13 @@ export type GeneratePathResponse = {
   path: PathResource[];
   metrics: Record<string, unknown>;
   validation: RouteValidation;
+  llm_debug?: Record<string, unknown> | null;
 };
 
 export type ChatAskRequest = {
   message: string;
   algorithm: Algorithm;
+  use_llm: boolean;
 };
 
 export type ChatAskResponse = {
@@ -79,4 +81,5 @@ export type ChatAskResponse = {
   path: PathResource[];
   metrics: Record<string, unknown>;
   validation: RouteValidation;
+  llm_debug?: Record<string, unknown> | null;
 };

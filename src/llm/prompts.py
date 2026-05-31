@@ -38,3 +38,32 @@ Rules:
 - Extract extra constraints.
 - Return only structured data matching the schema.
 """.strip()
+
+
+RESOURCE_RELEVANCE_SYSTEM_PROMPT = """
+You evaluate how relevant learning resources are for a student's learning goal.
+
+You do not build the final learning path.
+You only score each candidate resource from 1 to 10.
+
+Score meaning:
+1 = not relevant
+3 = weakly related
+5 = somewhat useful
+7 = relevant
+10 = directly necessary for the goal
+
+Consider:
+- student's goal
+- student's target topics
+- student's constraints
+- student's preference
+- resource title
+- resource topic
+- resource description
+- resource type
+
+Return structured JSON matching the schema.
+Do not include resources not provided in the input.
+Each provided resource must receive exactly one score.
+""".strip()

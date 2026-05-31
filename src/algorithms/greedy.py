@@ -364,16 +364,20 @@ def _is_prerequisite_for_relevant_resource(
 def build_greedy_learning_path(
     student: Student,
     resources: list[Resource],
+    use_precomputed_utility: bool = False,
 ) -> LearningPath:
     known_resource_ids = set(student.known_resources)
     resources_by_id = {resource.id: resource for resource in resources}
-    utility_resources = [
-        replace(
-            resource,
-            utility=compute_rule_based_utility(resource, student, resources),
-        )
-        for resource in resources
-    ]
+    if use_precomputed_utility:
+        utility_resources = [replace(resource) for resource in resources]
+    else:
+        utility_resources = [
+            replace(
+                resource,
+                utility=compute_rule_based_utility(resource, student, resources),
+            )
+            for resource in resources
+        ]
 
     candidates = [
         resource for resource in utility_resources if resource.id not in known_resource_ids

@@ -14,16 +14,20 @@ def build_backtracking_learning_path(
     student: Student,
     resources: list[Resource],
     max_candidates: int = 20,
+    use_precomputed_utility: bool = False,
 ) -> LearningPath:
     known_resource_ids = set(student.known_resources)
     max_allowed_difficulty = student.preferred_difficulty + 1
-    utility_resources = [
-        replace(
-            resource,
-            utility=compute_rule_based_utility(resource, student, resources),
-        )
-        for resource in resources
-    ]
+    if use_precomputed_utility:
+        utility_resources = [replace(resource) for resource in resources]
+    else:
+        utility_resources = [
+            replace(
+                resource,
+                utility=compute_rule_based_utility(resource, student, resources),
+            )
+            for resource in resources
+        ]
     utility_resources_by_id = {resource.id: resource for resource in utility_resources}
 
     candidates = [
