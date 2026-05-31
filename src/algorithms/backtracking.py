@@ -15,7 +15,11 @@ def build_backtracking_learning_path(
     resources: list[Resource],
     max_candidates: int = 20,
     use_precomputed_utility: bool = False,
+    min_utility_threshold: float | None = None,
 ) -> LearningPath:
+    root_utility_threshold = (
+        MIN_ROOT_UTILITY if min_utility_threshold is None else min_utility_threshold
+    )
     known_resource_ids = set(student.known_resources)
     max_allowed_difficulty = student.preferred_difficulty + 1
     if use_precomputed_utility:
@@ -35,7 +39,7 @@ def build_backtracking_learning_path(
         for resource in utility_resources
         if resource.id not in known_resource_ids
         and resource.difficulty <= max_allowed_difficulty
-        and resource.utility >= MIN_ROOT_UTILITY
+        and resource.utility >= root_utility_threshold
     ]
     candidates.sort(key=_candidate_sort_key)
     candidates = candidates[:max_candidates]

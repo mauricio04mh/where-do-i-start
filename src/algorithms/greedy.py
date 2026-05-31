@@ -134,6 +134,8 @@ DATA_SCIENCE_GOAL_TOKENS = {
     "visualizations",
 }
 
+MIN_ROOT_UTILITY = 1.0
+
 
 def compute_rule_based_utility(
     resource: Resource,
@@ -328,6 +330,10 @@ def _resource_matches_goal_or_targets(resource: Resource, student: Student) -> b
     return len(intent_tokens & resource_tokens) >= 2
 
 
+def resource_matches_student_goal(resource: Resource, student: Student) -> bool:
+    return _resource_matches_goal_or_targets(resource, student)
+
+
 def _is_effective_foundational_topic(
     resource_topic: str,
     recommended_topics: set[str],
@@ -365,7 +371,11 @@ def build_greedy_learning_path(
     student: Student,
     resources: list[Resource],
     use_precomputed_utility: bool = False,
+    min_utility_threshold: float | None = None,
 ) -> LearningPath:
+    root_utility_threshold = (
+        MIN_ROOT_UTILITY if min_utility_threshold is None else min_utility_threshold
+    )
     known_resource_ids = set(student.known_resources)
     resources_by_id = {resource.id: resource for resource in resources}
     if use_precomputed_utility:
@@ -397,10 +407,13 @@ def build_greedy_learning_path(
     for resource in candidates:
         if resource.id in selected_ids:
             continue
-        if resource.utility < 1.0 and not _is_prerequisite_for_relevant_resource(
-            resource,
-            resources,
-            student,
+        if (
+            resource.utility < root_utility_threshold
+            and not _is_prerequisite_for_relevant_resource(
+                resource,
+                resources,
+                student,
+            )
         ):
             continue
 

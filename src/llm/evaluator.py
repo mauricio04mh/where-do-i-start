@@ -3,7 +3,7 @@ from dataclasses import asdict, replace
 
 import requests
 
-from src.algorithms.greedy import compute_rule_based_utility
+from src.algorithms.greedy import compute_rule_based_utility, resource_matches_student_goal
 from src.llm.config import LLMConfig, load_llm_config
 from src.llm.prompts import RESOURCE_RELEVANCE_SYSTEM_PROMPT
 from src.llm.schemas import ResourceRelevanceScore, ResourceRelevanceScores
@@ -12,6 +12,7 @@ from src.models.student import Student
 
 MISSING_SCORE_REASON = "Missing from LLM response; assigned neutral score."
 NEUTRAL_SCORE_REASON = "LLM_PROVIDER=none; assigned neutral score."
+PARSE_FAILURE_REASON = "Could not parse LLM response; assigned neutral score."
 OLLAMA_UNREACHABLE_MESSAGE = (
     "Ollama is not running or is unreachable at {base_url}. "
     "Start it with `docker compose up -d ollama`."
@@ -161,12 +162,18 @@ def score_resources_relevance_with_ollama(
             f"{_short_fragment(response.text)}"
         )
 
-    parsed = parse_llm_json_response(content)
-    raw_scores = _extract_score_items(parsed)
-    if not isinstance(raw_scores, list):
-        raise RuntimeError(
-            "LLM response JSON must contain a 'scores' or 'resources' list. Response: "
-            f"{_short_fragment(content)}"
+    try:
+        parsed = parse_llm_json_response(content)
+        raw_scores = _extract_score_items(parsed)
+        if not isinstance(raw_scores, list):
+            return build_neutral_resource_scores(
+                resources,
+                reason=PARSE_FAILURE_REASON,
+            )
+    except RuntimeError:
+        return build_neutral_resource_scores(
+            resources,
+            reason=PARSE_FAILURE_REASON,
         )
 
     return _build_scores_by_resource_id(
@@ -189,12 +196,13 @@ def _extract_score_items(parsed: dict) -> list | None:
 
 def build_neutral_resource_scores(
     resources: list[Resource],
+    reason: str = NEUTRAL_SCORE_REASON,
 ) -> dict[str, ResourceRelevanceScore]:
     return {
         resource.id: ResourceRelevanceScore(
             resource_id=resource.id,
             relevance_score=5,
-            reason=NEUTRAL_SCORE_REASON,
+            reason=reason,
         )
         for resource in resources
     }
@@ -277,7 +285,9 @@ def _strip_markdown_json_fence(text: str) -> str:
 
     lines = stripped.splitlines()
     if len(lines) >= 2 and lines[-1].strip() == "```":
-        return "\n".join(lines[1:-1]).strip()
+        first_line = lines[0].strip().lower()
+        if first_line in {"```", "```json"}:
+            return "\n".join(lines[1:-1]).strip()
 
     return stripped
 
@@ -387,7 +397,7 @@ def apply_llm_scores_to_resources(
     for resource in resources:
         score = llm_scores.get(resource.id)
         relevance_score = score.relevance_score if score is not None else 5
-        final_utility = resource.utility + (score_weight * relevance_score)
+        final_utility = resource.utility + (score_weight * (relevance_score - 5))
         scored_resources.append(replace(resource, utility=final_utility))
 
     return scored_resources
@@ -404,6 +414,7 @@ def build_llm_scored_resources(
     resolved_score_weight = (
         score_weight if score_weight is not None else config.llm_score_weight
     )
+    resolved_utility_threshold = config.llm_min_utility_threshold
 
     rule_based_ranking = rank_resources_rule_based(student, resources)
     candidates = rule_based_ranking[:resolved_top_k]
@@ -423,6 +434,7 @@ def build_llm_scored_resources(
         rule_based_ranking=rule_based_ranking,
         llm_scores=llm_scores,
         combined_resources=combined_resources,
+        utility_threshold=resolved_utility_threshold,
     )
 
     return combined_resources, debug
@@ -439,6 +451,7 @@ def build_rule_based_scoring_debug(
     resolved_score_weight = (
         score_weight if score_weight is not None else config.llm_score_weight
     )
+    resolved_utility_threshold = config.llm_min_utility_threshold
     rule_based_ranking = rank_resources_rule_based(student, resources)
 
     return {
@@ -447,9 +460,11 @@ def build_rule_based_scoring_debug(
         "model": _model_name_for_provider(config),
         "top_k": resolved_top_k,
         "score_weight": resolved_score_weight,
+        "utility_threshold": resolved_utility_threshold,
         "rule_based_ranking": _serialize_rule_based_ranking(rule_based_ranking),
         "llm_scores": [],
         "combined_ranking": [],
+        "inconsistency_metrics": _empty_inconsistency_metrics(),
     }
 
 
@@ -461,6 +476,7 @@ def build_scoring_debug(
     rule_based_ranking: list[Resource],
     llm_scores: dict[str, ResourceRelevanceScore],
     combined_resources: list[Resource],
+    utility_threshold: float,
 ) -> dict:
     rule_based_by_id = {resource.id: resource for resource in rule_based_ranking}
 
@@ -470,6 +486,7 @@ def build_scoring_debug(
         "model": _model_name_for_provider(config),
         "top_k": top_k,
         "score_weight": score_weight,
+        "utility_threshold": utility_threshold,
         "rule_based_ranking": _serialize_rule_based_ranking(rule_based_ranking),
         "llm_scores": [
             _model_dump(score)
@@ -481,9 +498,94 @@ def build_scoring_debug(
                 rank=rank,
                 rule_based_utility=rule_based_by_id[resource.id].utility,
                 llm_score=llm_scores.get(resource.id),
+                score_weight=score_weight,
+                utility_threshold=utility_threshold,
             )
             for rank, resource in enumerate(combined_resources, start=1)
         ],
+        "inconsistency_metrics": build_llm_inconsistency_metrics(
+            student=student,
+            resources=combined_resources,
+            llm_scores=llm_scores,
+            selected_resources=[],
+        ),
+    }
+
+
+def update_llm_debug_with_selected_resources(
+    llm_debug: dict,
+    student: Student,
+    resources: list[Resource],
+    selected_resources: list[Resource],
+) -> dict:
+    selected_ids = {resource.id for resource in selected_resources}
+    for item in llm_debug.get("combined_ranking", []):
+        item["selected"] = item["id"] in selected_ids
+
+    llm_scores = {
+        item["resource_id"]: ResourceRelevanceScore(
+            resource_id=item["resource_id"],
+            relevance_score=item["relevance_score"],
+            reason=item["reason"],
+        )
+        for item in llm_debug.get("llm_scores", [])
+    }
+    llm_debug["inconsistency_metrics"] = build_llm_inconsistency_metrics(
+        student=student,
+        resources=resources,
+        llm_scores=llm_scores,
+        selected_resources=selected_resources,
+    )
+    return llm_debug
+
+
+def build_llm_inconsistency_metrics(
+    student: Student,
+    resources: list[Resource],
+    llm_scores: dict[str, ResourceRelevanceScore],
+    selected_resources: list[Resource] | None = None,
+) -> dict:
+    resources_by_id = {resource.id: resource for resource in resources}
+    selected_resources = selected_resources or []
+    selected_scores = [
+        llm_scores[resource.id].relevance_score
+        for resource in selected_resources
+        if resource.id in llm_scores
+    ]
+
+    high_off_topic_count = 0
+    for resource_id, score in llm_scores.items():
+        resource = resources_by_id.get(resource_id)
+        if resource is None:
+            continue
+        if score.relevance_score >= 8 and not resource_matches_student_goal(
+            resource,
+            student,
+        ):
+            high_off_topic_count += 1
+
+    selected_avg_llm_score = (
+        sum(selected_scores) / len(selected_scores) if selected_scores else None
+    )
+
+    return {
+        "missing_llm_score_count": sum(
+            1 for score in llm_scores.values() if score.reason == MISSING_SCORE_REASON
+        ),
+        "low_relevance_selected_count": sum(
+            1 for score in selected_scores if score <= 3
+        ),
+        "high_llm_score_off_topic_count": high_off_topic_count,
+        "selected_avg_llm_score": selected_avg_llm_score,
+    }
+
+
+def _empty_inconsistency_metrics() -> dict:
+    return {
+        "missing_llm_score_count": 0,
+        "low_relevance_selected_count": 0,
+        "high_llm_score_off_topic_count": 0,
+        "selected_avg_llm_score": None,
     }
 
 
@@ -542,7 +644,10 @@ def _serialize_combined_resource(
     rank: int,
     rule_based_utility: float,
     llm_score: ResourceRelevanceScore | None,
+    score_weight: float,
+    utility_threshold: float,
 ) -> dict:
+    relevance_score = llm_score.relevance_score if llm_score else 5
     return {
         "rank": rank,
         "id": resource.id,
@@ -550,8 +655,11 @@ def _serialize_combined_resource(
         "topic": resource.topic,
         "duration_hours": resource.duration_hours,
         "rule_based_utility": rule_based_utility,
-        "llm_relevance_score": llm_score.relevance_score if llm_score else 5,
+        "llm_relevance_score": relevance_score,
+        "llm_utility_adjustment": score_weight * (relevance_score - 5),
         "final_utility": resource.utility,
+        "passes_utility_threshold": resource.utility >= utility_threshold,
+        "selected": False,
     }
 
 

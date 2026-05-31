@@ -167,6 +167,7 @@ def print_scoring_debug(debug: dict, include_llm: bool) -> None:
     print(f"LLM model: {debug['model']}")
     print(f"Top K: {debug['top_k']}")
     print(f"Score weight: {debug['score_weight']}")
+    print(f"Utility threshold: {debug['utility_threshold']}")
     print()
     print("Rule-based ranking:")
     for resource in debug["rule_based_ranking"]:
@@ -193,6 +194,11 @@ def print_scoring_debug(debug: dict, include_llm: bool) -> None:
             f"- {score['resource_id']}: {score['relevance_score']} "
             f"({score['reason']})"
         )
+
+    print()
+    print("Inconsistency metrics:")
+    for name, value in debug["inconsistency_metrics"].items():
+        print(f"- {name}: {value}")
 
     print()
     print("Combined ranking:")

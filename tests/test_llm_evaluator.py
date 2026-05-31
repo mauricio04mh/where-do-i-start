@@ -116,8 +116,8 @@ def test_apply_llm_scores_to_resources_combines_utility_and_uses_neutral_missing
         score_weight=2.0,
     )
 
-    assert scored[0].utility == pytest.approx(26.0)
-    assert scored[1].utility == pytest.approx(13.0)
+    assert scored[0].utility == pytest.approx(16.0)
+    assert scored[1].utility == pytest.approx(3.0)
     assert resources[0].utility == pytest.approx(10.0)
 
 
@@ -149,6 +149,14 @@ def test_parse_llm_json_response_parses_markdown_fence() -> None:
     )
 
     assert parsed["scores"][0]["relevance_score"] == 8
+
+
+def test_parse_llm_json_response_extracts_first_json_object() -> None:
+    parsed = evaluator.parse_llm_json_response(
+        'Here is the result:\n{"scores": [{"resource_id": "a", "relevance_score": 7, "reason": "fit"}]}\nDone.'
+    )
+
+    assert parsed["scores"][0]["resource_id"] == "a"
 
 
 def test_ollama_scoring_uses_single_batch_call_and_normalizes_scores(
@@ -244,6 +252,25 @@ def test_ollama_scoring_accepts_resources_id_score_shape(monkeypatch) -> None:
     assert scores["prompt-engineering"].relevance_score == 10
 
 
+def test_ollama_parse_failure_returns_neutral_scores(monkeypatch) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "ollama")
+    resources = [make_resource("a"), make_resource("b")]
+
+    def fake_post(url, json, timeout):
+        return FakeResponse(
+            200,
+            {"message": {"content": "not json"}},
+        )
+
+    monkeypatch.setattr(evaluator.requests, "post", fake_post)
+
+    scores = evaluator.score_resources_relevance_with_llm(make_student(), resources)
+
+    assert set(scores) == {"a", "b"}
+    assert all(score.relevance_score == 5 for score in scores.values())
+    assert all(score.reason == evaluator.PARSE_FAILURE_REASON for score in scores.values())
+
+
 def test_ollama_connection_error_has_clear_runtime_error(monkeypatch) -> None:
     monkeypatch.setenv("LLM_PROVIDER", "ollama")
     monkeypatch.setenv("OLLAMA_BASE_URL", "http://localhost:11434")
@@ -293,6 +320,8 @@ def test_llm_debug_includes_provider_and_model(monkeypatch) -> None:
 
     assert debug["provider"] == "none"
     assert debug["model"] == ""
+    assert debug["utility_threshold"] == pytest.approx(8.0)
+    assert debug["inconsistency_metrics"]["missing_llm_score_count"] == 0
 
 
 def test_generate_path_for_student_object_without_llm_still_works() -> None:
@@ -317,7 +346,7 @@ def test_generate_path_for_student_object_with_llm_uses_mocked_batch_scoring(
 ) -> None:
     student = make_student()
     resources = [make_resource("a"), make_resource("b")]
-    debug = {"top_k": 2, "llm_scores": []}
+    debug = {"top_k": 2, "utility_threshold": 8.0, "llm_scores": []}
 
     def fake_build_llm_scored_resources(student, resources, top_k=None, score_weight=None):
         return [replace(resource, utility=10.0) for resource in resources], debug
@@ -340,6 +369,75 @@ def test_generate_path_for_student_object_with_llm_uses_mocked_batch_scoring(
     assert all(resource.utility == pytest.approx(10.0) for resource in result["path"])
 
 
+def test_llm_debug_selection_metrics_count_low_relevance_and_missing_scores(
+    monkeypatch,
+) -> None:
+    student = make_student()
+    resources = [make_resource("a"), make_resource("b")]
+    debug = {
+        "top_k": 2,
+        "utility_threshold": 0.0,
+        "llm_scores": [
+            {
+                "resource_id": "a",
+                "relevance_score": 3,
+                "reason": "Weak match.",
+            },
+            {
+                "resource_id": "b",
+                "relevance_score": 5,
+                "reason": evaluator.MISSING_SCORE_REASON,
+            },
+        ],
+        "combined_ranking": [
+            {"id": "a", "selected": False},
+            {"id": "b", "selected": False},
+        ],
+    }
+
+    def fake_build_llm_scored_resources(student, resources, top_k=None, score_weight=None):
+        return [
+            replace(resources[0], utility=10.0),
+            replace(resources[1], utility=9.0),
+        ], debug
+
+    monkeypatch.setattr(
+        path_service,
+        "build_llm_scored_resources",
+        fake_build_llm_scored_resources,
+    )
+
+    result = path_service.generate_path_for_student_object(
+        student=student,
+        algorithm="greedy",
+        use_llm=True,
+        resources=resources,
+    )
+
+    metrics = result["llm_debug"]["inconsistency_metrics"]
+    assert metrics["low_relevance_selected_count"] == 1
+    assert metrics["missing_llm_score_count"] == 1
+    assert metrics["selected_avg_llm_score"] == pytest.approx(4.0)
+    assert all(item["selected"] for item in result["llm_debug"]["combined_ranking"])
+
+
+def test_llm_utility_threshold_filters_roots_but_keeps_prerequisites() -> None:
+    student = make_student()
+    prerequisite = make_resource("prereq", utility=1.0)
+    target = replace(make_resource("target", utility=9.0), prerequisites=["prereq"])
+    low_root = make_resource("low-root", utility=7.0)
+
+    path = path_service.build_learning_path(
+        algorithm="greedy",
+        student=student,
+        resources=[prerequisite, target, low_root],
+        use_precomputed_utility=True,
+        min_utility_threshold=8.0,
+    )
+
+    assert [resource.id for resource in path.resources] == ["prereq", "target"]
+
+
 def test_debug_scoring_route_without_llm_returns_rule_based_ranking() -> None:
     result = debug_scoring(
         GeneratePathRequest(
@@ -353,3 +451,4 @@ def test_debug_scoring_route_without_llm_returns_rule_based_ranking() -> None:
     assert result["rule_based_ranking"]
     assert result["llm_scores"] == []
     assert result["combined_ranking"] == []
+    assert result["inconsistency_metrics"]["missing_llm_score_count"] == 0

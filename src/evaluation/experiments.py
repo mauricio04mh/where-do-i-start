@@ -78,6 +78,9 @@ def run_experiments(
                 student=student,
                 resources=path_resources,
                 use_precomputed_utility=use_llm,
+                min_utility_threshold=(
+                    llm_config.llm_min_utility_threshold if use_llm else None
+                ),
             )
             runtime_seconds = time.perf_counter() - start_time
 

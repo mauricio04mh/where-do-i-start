@@ -97,6 +97,18 @@ top-K rule-based candidates. It first ranks every resource with the deterministi
 utility function, sends only the top-K candidates to the selected LLM in one batch call,
 then combines rule-based utility with the LLM relevance score.
 
+The combined utility is now centered on the neutral LLM score:
+`final_utility = rule_based_utility + LLM_SCORE_WEIGHT * (llm_score - 5)`.
+Scores above 5 boost a resource and scores below 5 penalize it. When LLM scoring
+is enabled, root resources with final utility below `LLM_MIN_UTILITY_THRESHOLD`
+are not added to the path, while prerequisites can still be included when they
+are needed by a selected resource.
+
+`llm_debug` records provider/model settings, score weight, top-K, the combined
+ranking, and inconsistency metrics: missing neutral scores, low-relevance
+selected resources, high LLM scores for off-topic resources, and the average LLM
+score of selected resources.
+
 Environment variables:
 
 - `LLM_PROVIDER=gemini`
@@ -107,6 +119,7 @@ Environment variables:
 - `OLLAMA_TIMEOUT_SECONDS=120`
 - `LLM_CANDIDATE_TOP_K=15`
 - `LLM_SCORE_WEIGHT=1.0`
+- `LLM_MIN_UTILITY_THRESHOLD=8.0`
 
 Examples:
 
@@ -147,6 +160,7 @@ OLLAMA_MODEL=llama3.2:3b
 OLLAMA_TIMEOUT_SECONDS=120
 LLM_CANDIDATE_TOP_K=10
 LLM_SCORE_WEIGHT=2.0
+LLM_MIN_UTILITY_THRESHOLD=8.0
 ```
 
 The backend uses `network_mode: host`, so `http://localhost:11434` reaches the

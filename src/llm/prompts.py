@@ -63,6 +63,13 @@ Consider:
 - resource description
 - resource type
 
+Strict relevance rules:
+- Prioritize concepts explicitly mentioned in the student's goal, target topics, and constraints.
+- Do not assign a high score only because the resource shares a broad general topic.
+- If a resource does not match the student's explicit objective, score it low even when it is generally useful.
+- Scores 8 to 10 are reserved for resources that directly support the explicit objective.
+- Prefer precise matches over adjacent or foundational material.
+
 Return structured JSON matching the schema.
 Do not include resources not provided in the input.
 Each provided resource must receive exactly one score.

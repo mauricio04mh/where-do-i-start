@@ -6,7 +6,10 @@ from src.models.resource import Resource
 from src.models.student import Student
 from src.repositories.resource_repository import list_resources
 from src.repositories.student_repository import get_student
-from src.llm.evaluator import build_llm_scored_resources
+from src.llm.evaluator import (
+    build_llm_scored_resources,
+    update_llm_debug_with_selected_resources,
+)
 from src.utils.validators import validate_learning_path
 
 SUPPORTED_ALGORITHMS = {"greedy", "backtracking"}
@@ -40,6 +43,7 @@ def generate_path_for_student_object(
 
     source_resources = resources if resources is not None else list_resources()
     llm_debug = None
+    min_utility_threshold = None
     if use_llm:
         source_resources, llm_debug = build_llm_scored_resources(
             student=student,
@@ -47,13 +51,22 @@ def generate_path_for_student_object(
             top_k=llm_top_k,
             score_weight=llm_score_weight,
         )
+        min_utility_threshold = llm_debug["utility_threshold"]
 
     path = build_learning_path(
         algorithm=algorithm,
         student=student,
         resources=source_resources,
         use_precomputed_utility=use_llm,
+        min_utility_threshold=min_utility_threshold,
     )
+    if llm_debug is not None:
+        update_llm_debug_with_selected_resources(
+            llm_debug=llm_debug,
+            student=student,
+            resources=source_resources,
+            selected_resources=path.resources,
+        )
     validation = validate_learning_path(path, student)
     metrics = evaluate_learning_path(path, student, algorithm)
 
@@ -72,18 +85,21 @@ def build_learning_path(
     student: Student,
     resources: list[Resource],
     use_precomputed_utility: bool = False,
+    min_utility_threshold: float | None = None,
 ) -> LearningPath:
     if algorithm == "greedy":
         return build_greedy_learning_path(
             student,
             resources,
             use_precomputed_utility=use_precomputed_utility,
+            min_utility_threshold=min_utility_threshold,
         )
     if algorithm == "backtracking":
         return build_backtracking_learning_path(
             student,
             resources,
             use_precomputed_utility=use_precomputed_utility,
+            min_utility_threshold=min_utility_threshold,
         )
 
     raise ValueError(

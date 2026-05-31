@@ -14,6 +14,7 @@ class LLMConfig:
     ollama_timeout_seconds: int
     llm_candidate_top_k: int
     llm_score_weight: float
+    llm_min_utility_threshold: float
 
 
 def load_llm_config() -> LLMConfig:
@@ -29,6 +30,10 @@ def load_llm_config() -> LLMConfig:
     ollama_timeout_seconds = _read_positive_int("OLLAMA_TIMEOUT_SECONDS", 120)
     llm_candidate_top_k = _read_positive_int("LLM_CANDIDATE_TOP_K", 15)
     llm_score_weight = _read_non_negative_float("LLM_SCORE_WEIGHT", 1.0)
+    llm_min_utility_threshold = _read_non_negative_float(
+        "LLM_MIN_UTILITY_THRESHOLD",
+        8.0,
+    )
 
     return LLMConfig(
         provider=provider,
@@ -39,6 +44,7 @@ def load_llm_config() -> LLMConfig:
         ollama_timeout_seconds=ollama_timeout_seconds,
         llm_candidate_top_k=llm_candidate_top_k,
         llm_score_weight=llm_score_weight,
+        llm_min_utility_threshold=llm_min_utility_threshold,
     )
 
 
