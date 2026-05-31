@@ -25,6 +25,12 @@ python -m src.main --student student-chatbot-beginner --algorithm backtracking
 python -m src.main --run-experiments
 ```
 
+Debug de scoring sin generar ruta:
+
+```bash
+python -m src.main --student student-llm-apps --debug-scoring
+```
+
 ## API Backend
 
 Instalación:
@@ -43,11 +49,36 @@ Abrir documentación:
 
 http://127.0.0.1:8000/docs
 
+## Docker Compose
+
+Levantar backend y frontend juntos:
+
+```bash
+docker compose up --build
+```
+
+URLs:
+
+- Frontend: http://127.0.0.1:5173
+- Backend/API docs: http://127.0.0.1:8001/docs
+
+El backend corre dentro del contenedor en el puerto `8000`, pero se expone en
+tu maquina como `8001` para evitar choques con procesos locales. El frontend
+usa el nombre interno `backend:8000`, asi que no necesitas cambiar nada para
+que las llamadas a `/api` funcionen.
+
+Detener servicios:
+
+```bash
+docker compose down
+```
+
 Endpoints principales:
 
 - GET /students
 - GET /resources
 - POST /paths/generate
+- POST /paths/debug-scoring
 - POST /chat/ask
 
 Ejemplo POST /paths/generate:
@@ -58,6 +89,30 @@ Ejemplo POST /paths/generate:
   "algorithm": "backtracking",
   "use_llm": false
 }
+```
+
+## LLM-assisted scoring
+
+The system can optionally use Gemini to score the semantic relevance of the
+top-K rule-based candidates. It first ranks every resource with the deterministic
+utility function, sends only the top-K candidates to Gemini in one batch call,
+then combines rule-based utility with the LLM relevance score.
+
+Environment variables:
+
+- `LLM_PROVIDER=gemini`
+- `GEMINI_API_KEY=...`
+- `GEMINI_MODEL=gemini-2.5-flash-lite`
+- `LLM_CANDIDATE_TOP_K=15`
+- `LLM_SCORE_WEIGHT=1.0`
+
+Examples:
+
+```bash
+python -m src.main --student student-llm-apps --algorithm greedy --use-llm
+python -m src.main --student student-llm-apps --algorithm backtracking --use-llm
+python -m src.main --student student-llm-apps --debug-scoring
+python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-top-k 10 --llm-score-weight 2.0
 ```
 
 ## Frontend
