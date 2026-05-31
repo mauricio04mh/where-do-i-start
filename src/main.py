@@ -1,4 +1,5 @@
 import argparse
+import os
 
 from src.llm.evaluator import (
     build_llm_scored_resources,
@@ -66,11 +67,33 @@ def parse_args() -> argparse.Namespace:
         help="Override LLM_SCORE_WEIGHT for this execution.",
     )
     parser.add_argument(
+        "--llm-provider",
+        choices=["gemini", "ollama", "none"],
+        help="Override LLM_PROVIDER for this execution.",
+    )
+    parser.add_argument(
+        "--ollama-model",
+        help="Override OLLAMA_MODEL for this execution.",
+    )
+    parser.add_argument(
+        "--ollama-base-url",
+        help="Override OLLAMA_BASE_URL for this execution.",
+    )
+    parser.add_argument(
         "--run-experiments",
         action="store_true",
         help="Run all algorithms for all students and save evaluation reports.",
     )
     return parser.parse_args()
+
+
+def apply_llm_runtime_overrides(args: argparse.Namespace) -> None:
+    if args.llm_provider:
+        os.environ["LLM_PROVIDER"] = args.llm_provider
+    if args.ollama_model:
+        os.environ["OLLAMA_MODEL"] = args.ollama_model
+    if args.ollama_base_url:
+        os.environ["OLLAMA_BASE_URL"] = args.ollama_base_url
 
 
 def select_student(
@@ -140,6 +163,8 @@ def print_learning_path(
 def print_scoring_debug(debug: dict, include_llm: bool) -> None:
     print()
     print(f"Student: {debug['student']['id']}")
+    print(f"LLM provider: {debug['provider']}")
+    print(f"LLM model: {debug['model']}")
     print(f"Top K: {debug['top_k']}")
     print(f"Score weight: {debug['score_weight']}")
     print()
@@ -182,6 +207,7 @@ def print_scoring_debug(debug: dict, include_llm: bool) -> None:
 
 def main() -> None:
     args = parse_args()
+    apply_llm_runtime_overrides(args)
     if args.run_experiments:
         from src.evaluation.experiments import run_experiments
 

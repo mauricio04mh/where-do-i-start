@@ -1,6 +1,7 @@
 ============================================================
 Student: student-web-builder
 Algorithm: greedy
+Use LLM: False
 Goal: Build and publish a small interactive portfolio application.
 Available time: 30 hours
 
@@ -42,6 +43,7 @@ Violations: none
 ============================================================
 Student: student-web-builder
 Algorithm: backtracking
+Use LLM: False
 Goal: Build and publish a small interactive portfolio application.
 Available time: 30 hours
 
@@ -81,8 +83,86 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-web-builder
+Algorithm: greedy
+Use LLM: True
+Goal: Build and publish a small interactive portfolio application.
+Available time: 30 hours
+
+Recommended path:
+1. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 15.00
+
+2. Deployment Fundamentals
+   id: deployment-fundamentals
+   topic: Deployment
+   duration: 8h
+   difficulty: 3
+   utility: 44.25
+
+3. Docker Basics for Developers
+   id: docker-basics
+   topic: Deployment
+   duration: 8h
+   difficulty: 3
+   utility: 43.75
+
+4. Python Programming Basics
+   id: python-basics
+   topic: Programming
+   duration: 8h
+   difficulty: 1
+   utility: 9.00
+
+Total duration: 28h
+Total utility: 112.00
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-web-builder
+Algorithm: backtracking
+Use LLM: True
+Goal: Build and publish a small interactive portfolio application.
+Available time: 30 hours
+
+Recommended path:
+1. JavaScript Essentials
+   id: javascript-essentials
+   topic: Web Development
+   duration: 11h
+   difficulty: 2
+   utility: 49.50
+
+2. Build a Frontend Mini App
+   id: frontend-mini-app
+   topic: Web Development
+   duration: 14h
+   difficulty: 3
+   utility: 47.50
+
+3. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 15.00
+
+Total duration: 29h
+Total utility: 112.00
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-data-analyst
 Algorithm: greedy
+Use LLM: False
 Goal: Learn enough programming and data skills to analyze CSV datasets independently.
 Available time: 35 hours
 
@@ -117,6 +197,7 @@ Violations: none
 ============================================================
 Student: student-data-analyst
 Algorithm: backtracking
+Use LLM: False
 Goal: Learn enough programming and data skills to analyze CSV datasets independently.
 Available time: 35 hours
 
@@ -149,8 +230,93 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-data-analyst
+Algorithm: greedy
+Use LLM: True
+Goal: Learn enough programming and data skills to analyze CSV datasets independently.
+Available time: 35 hours
+
+Recommended path:
+1. Statistics Basics for Data Science
+   id: statistics-basics
+   topic: Data Science
+   duration: 10h
+   difficulty: 3
+   utility: 53.00
+
+2. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 51.25
+
+3. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 36.00
+
+4. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 2.50
+
+Total duration: 35h
+Total utility: 142.75
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-data-analyst
+Algorithm: backtracking
+Use LLM: True
+Goal: Learn enough programming and data skills to analyze CSV datasets independently.
+Available time: 35 hours
+
+Recommended path:
+1. Statistics Basics for Data Science
+   id: statistics-basics
+   topic: Data Science
+   duration: 10h
+   difficulty: 3
+   utility: 53.00
+
+2. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 51.25
+
+3. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 36.00
+
+4. Command Line Basics
+   id: command-line-basics
+   topic: Developer Tools
+   duration: 4h
+   difficulty: 1
+   utility: 2.50
+
+Total duration: 35h
+Total utility: 142.75
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-cs-foundations
 Algorithm: greedy
+Use LLM: False
 Goal: Strengthen computer science fundamentals before taking advanced algorithms or AI courses.
 Available time: 24 hours
 
@@ -178,6 +344,7 @@ Violations: none
 ============================================================
 Student: student-cs-foundations
 Algorithm: backtracking
+Use LLM: False
 Goal: Strengthen computer science fundamentals before taking advanced algorithms or AI courses.
 Available time: 24 hours
 
@@ -203,8 +370,65 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-cs-foundations
+Algorithm: greedy
+Use LLM: True
+Goal: Strengthen computer science fundamentals before taking advanced algorithms or AI courses.
+Available time: 24 hours
+
+Recommended path:
+1. Object-Oriented Programming in Python
+   id: python-oop
+   topic: Programming
+   duration: 9h
+   difficulty: 2
+   utility: 35.25
+
+2. Algorithms Basics
+   id: algorithms-basics
+   topic: Computer Science
+   duration: 12h
+   difficulty: 3
+   utility: 39.25
+
+Total duration: 21h
+Total utility: 74.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-cs-foundations
+Algorithm: backtracking
+Use LLM: True
+Goal: Strengthen computer science fundamentals before taking advanced algorithms or AI courses.
+Available time: 24 hours
+
+Recommended path:
+1. Algorithms Basics
+   id: algorithms-basics
+   topic: Computer Science
+   duration: 12h
+   difficulty: 3
+   utility: 39.25
+
+2. Object-Oriented Programming in Python
+   id: python-oop
+   topic: Programming
+   duration: 9h
+   difficulty: 2
+   utility: 35.25
+
+Total duration: 21h
+Total utility: 74.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-chatbot-beginner
 Algorithm: greedy
+Use LLM: False
 Goal: Learn how to build a simple AI chatbot for customer support.
 Available time: 25 hours
 
@@ -246,6 +470,7 @@ Violations: none
 ============================================================
 Student: student-chatbot-beginner
 Algorithm: backtracking
+Use LLM: False
 Goal: Learn how to build a simple AI chatbot for customer support.
 Available time: 25 hours
 
@@ -285,8 +510,65 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-chatbot-beginner
+Algorithm: greedy
+Use LLM: True
+Goal: Learn how to build a simple AI chatbot for customer support.
+Available time: 25 hours
+
+Recommended path:
+1. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 40.50
+
+2. Build a Rule-Based Chatbot
+   id: rule-based-chatbot-project
+   topic: AI Chatbots
+   duration: 8h
+   difficulty: 2
+   utility: 44.75
+
+Total duration: 13h
+Total utility: 85.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-chatbot-beginner
+Algorithm: backtracking
+Use LLM: True
+Goal: Learn how to build a simple AI chatbot for customer support.
+Available time: 25 hours
+
+Recommended path:
+1. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 40.50
+
+2. Build a Rule-Based Chatbot
+   id: rule-based-chatbot-project
+   topic: AI Chatbots
+   duration: 8h
+   difficulty: 2
+   utility: 44.75
+
+Total duration: 13h
+Total utility: 85.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-rag-intermediate
 Algorithm: greedy
+Use LLM: False
 Goal: Build a RAG system that answers questions from company documents.
 Available time: 45 hours
 
@@ -349,6 +631,7 @@ Violations: none
 ============================================================
 Student: student-rag-intermediate
 Algorithm: backtracking
+Use LLM: False
 Goal: Build a RAG system that answers questions from company documents.
 Available time: 45 hours
 
@@ -409,8 +692,135 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-rag-intermediate
+Algorithm: greedy
+Use LLM: True
+Goal: Build a RAG system that answers questions from company documents.
+Available time: 45 hours
+
+Recommended path:
+1. Large Language Model Fundamentals
+   id: llm-fundamentals
+   topic: LLMs
+   duration: 7h
+   difficulty: 3
+   utility: 40.75
+
+2. Prompt Engineering for Practical AI Systems
+   id: prompt-engineering
+   topic: LLMs
+   duration: 6h
+   difficulty: 3
+   utility: 43.25
+
+3. Embeddings and Semantic Search
+   id: embeddings-intro
+   topic: LLMs
+   duration: 8h
+   difficulty: 4
+   utility: 42.25
+
+4. Vector Databases for AI Applications
+   id: vector-databases
+   topic: RAG
+   duration: 7h
+   difficulty: 4
+   utility: 49.00
+
+5. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 34.75
+
+6. Structured Output with LLMs
+   id: structured-llm-output
+   topic: LLMs
+   duration: 6h
+   difficulty: 4
+   utility: 37.25
+
+7. Text Preprocessing Workshop
+   id: text-preprocessing
+   topic: Natural Language Processing
+   duration: 6h
+   difficulty: 3
+   utility: 18.00
+
+Total duration: 45h
+Total utility: 265.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-rag-intermediate
+Algorithm: backtracking
+Use LLM: True
+Goal: Build a RAG system that answers questions from company documents.
+Available time: 45 hours
+
+Recommended path:
+1. Large Language Model Fundamentals
+   id: llm-fundamentals
+   topic: LLMs
+   duration: 7h
+   difficulty: 3
+   utility: 40.75
+
+2. Embeddings and Semantic Search
+   id: embeddings-intro
+   topic: LLMs
+   duration: 8h
+   difficulty: 4
+   utility: 42.25
+
+3. Vector Databases for AI Applications
+   id: vector-databases
+   topic: RAG
+   duration: 7h
+   difficulty: 4
+   utility: 49.00
+
+4. Prompt Engineering for Practical AI Systems
+   id: prompt-engineering
+   topic: LLMs
+   duration: 6h
+   difficulty: 3
+   utility: 43.25
+
+5. Structured Output with LLMs
+   id: structured-llm-output
+   topic: LLMs
+   duration: 6h
+   difficulty: 4
+   utility: 37.25
+
+6. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 34.75
+
+7. Text Preprocessing Workshop
+   id: text-preprocessing
+   topic: Natural Language Processing
+   duration: 6h
+   difficulty: 3
+   utility: 18.00
+
+Total duration: 45h
+Total utility: 265.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-ml-theory
 Algorithm: greedy
+Use LLM: False
 Goal: Understand the theoretical foundations of machine learning and model evaluation.
 Available time: 34 hours
 
@@ -445,6 +855,7 @@ Violations: none
 ============================================================
 Student: student-ml-theory
 Algorithm: backtracking
+Use LLM: False
 Goal: Understand the theoretical foundations of machine learning and model evaluation.
 Available time: 34 hours
 
@@ -477,8 +888,79 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-ml-theory
+Algorithm: greedy
+Use LLM: True
+Goal: Understand the theoretical foundations of machine learning and model evaluation.
+Available time: 34 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 17.00
+
+2. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 48.50
+
+3. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 39.00
+
+Total duration: 29h
+Total utility: 104.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-ml-theory
+Algorithm: backtracking
+Use LLM: True
+Goal: Understand the theoretical foundations of machine learning and model evaluation.
+Available time: 34 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 17.00
+
+2. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 48.50
+
+3. Introduction to Machine Learning
+   id: machine-learning-intro
+   topic: Machine Learning
+   duration: 12h
+   difficulty: 4
+   utility: 51.75
+
+Total duration: 33h
+Total utility: 117.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-web-backend
 Algorithm: greedy
+Use LLM: False
 Goal: Learn backend development to build APIs connected to databases.
 Available time: 28 hours
 
@@ -513,6 +995,7 @@ Violations: none
 ============================================================
 Student: student-web-backend
 Algorithm: backtracking
+Use LLM: False
 Goal: Learn backend development to build APIs connected to databases.
 Available time: 28 hours
 
@@ -545,8 +1028,79 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-web-backend
+Algorithm: greedy
+Use LLM: True
+Goal: Learn backend development to build APIs connected to databases.
+Available time: 28 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 52.75
+
+2. REST API Design
+   id: api-design
+   topic: Backend Development
+   duration: 10h
+   difficulty: 3
+   utility: 51.25
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 51.25
+
+Total duration: 25h
+Total utility: 155.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-web-backend
+Algorithm: backtracking
+Use LLM: True
+Goal: Learn backend development to build APIs connected to databases.
+Available time: 28 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 52.75
+
+2. REST API Design
+   id: api-design
+   topic: Backend Development
+   duration: 10h
+   difficulty: 3
+   utility: 51.25
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 51.25
+
+Total duration: 25h
+Total utility: 155.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-ai-product
 Algorithm: greedy
+Use LLM: False
 Goal: Learn enough AI concepts to design safe and useful chatbot products.
 Available time: 18 hours
 
@@ -581,6 +1135,7 @@ Violations: none
 ============================================================
 Student: student-ai-product
 Algorithm: backtracking
+Use LLM: False
 Goal: Learn enough AI concepts to design safe and useful chatbot products.
 Available time: 18 hours
 
@@ -613,8 +1168,79 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-ai-product
+Algorithm: greedy
+Use LLM: True
+Goal: Learn enough AI concepts to design safe and useful chatbot products.
+Available time: 18 hours
+
+Recommended path:
+1. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 45.75
+
+2. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 46.00
+
+3. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 10.75
+
+Total duration: 17h
+Total utility: 102.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-ai-product
+Algorithm: backtracking
+Use LLM: True
+Goal: Learn enough AI concepts to design safe and useful chatbot products.
+Available time: 18 hours
+
+Recommended path:
+1. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 46.00
+
+2. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 45.75
+
+3. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 10.75
+
+Total duration: 17h
+Total utility: 102.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-llm-apps
 Algorithm: greedy
+Use LLM: False
 Goal: Build practical applications using LLM APIs, structured outputs, and prompt engineering.
 Available time: 38 hours
 
@@ -663,6 +1289,7 @@ Violations: none
 ============================================================
 Student: student-llm-apps
 Algorithm: backtracking
+Use LLM: False
 Goal: Build practical applications using LLM APIs, structured outputs, and prompt engineering.
 Available time: 38 hours
 
@@ -709,8 +1336,107 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-llm-apps
+Algorithm: greedy
+Use LLM: True
+Goal: Build practical applications using LLM APIs, structured outputs, and prompt engineering.
+Available time: 38 hours
+
+Recommended path:
+1. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 20.00
+
+2. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 45.75
+
+3. FastAPI Basics
+   id: fastapi-basics
+   topic: Backend Development
+   duration: 9h
+   difficulty: 3
+   utility: 48.25
+
+4. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 19.00
+
+5. Build a Rule-Based Chatbot
+   id: rule-based-chatbot-project
+   topic: AI Chatbots
+   duration: 8h
+   difficulty: 2
+   utility: 20.50
+
+Total duration: 37h
+Total utility: 153.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-llm-apps
+Algorithm: backtracking
+Use LLM: True
+Goal: Build practical applications using LLM APIs, structured outputs, and prompt engineering.
+Available time: 38 hours
+
+Recommended path:
+1. FastAPI Basics
+   id: fastapi-basics
+   topic: Backend Development
+   duration: 9h
+   difficulty: 3
+   utility: 48.25
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 20.00
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 45.75
+
+4. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 19.00
+
+5. Build a Rule-Based Chatbot
+   id: rule-based-chatbot-project
+   topic: AI Chatbots
+   duration: 8h
+   difficulty: 2
+   utility: 20.50
+
+Total duration: 37h
+Total utility: 153.50
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-data-visualizer
 Algorithm: greedy
+Use LLM: False
 Goal: Analyze datasets and create clear visualizations for reports and presentations.
 Available time: 22 hours
 
@@ -738,6 +1464,7 @@ Violations: none
 ============================================================
 Student: student-data-visualizer
 Algorithm: backtracking
+Use LLM: False
 Goal: Analyze datasets and create clear visualizations for reports and presentations.
 Available time: 22 hours
 
@@ -763,8 +1490,65 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-data-visualizer
+Algorithm: greedy
+Use LLM: True
+Goal: Analyze datasets and create clear visualizations for reports and presentations.
+Available time: 22 hours
+
+Recommended path:
+1. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 51.25
+
+2. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 50.00
+
+Total duration: 21h
+Total utility: 101.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-data-visualizer
+Algorithm: backtracking
+Use LLM: True
+Goal: Analyze datasets and create clear visualizations for reports and presentations.
+Available time: 22 hours
+
+Recommended path:
+1. Data Analysis with Pandas
+   id: data-analysis-pandas
+   topic: Data Science
+   duration: 13h
+   difficulty: 3
+   utility: 51.25
+
+2. Data Visualization with Python
+   id: data-visualization
+   topic: Data Science
+   duration: 8h
+   difficulty: 3
+   utility: 50.00
+
+Total duration: 21h
+Total utility: 101.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-deployment-focused
 Algorithm: greedy
+Use LLM: False
 Goal: Deploy a chatbot backend service using containers and basic production configuration.
 Available time: 32 hours
 
@@ -806,6 +1590,7 @@ Violations: none
 ============================================================
 Student: student-deployment-focused
 Algorithm: backtracking
+Use LLM: False
 Goal: Deploy a chatbot backend service using containers and basic production configuration.
 Available time: 32 hours
 
@@ -845,8 +1630,93 @@ Violations: none
 ============================================================
 
 ============================================================
+Student: student-deployment-focused
+Algorithm: greedy
+Use LLM: True
+Goal: Deploy a chatbot backend service using containers and basic production configuration.
+Available time: 32 hours
+
+Recommended path:
+1. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 33.50
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 22.75
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 45.00
+
+4. FastAPI Basics
+   id: fastapi-basics
+   topic: Backend Development
+   duration: 9h
+   difficulty: 3
+   utility: 49.50
+
+Total duration: 29h
+Total utility: 150.75
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-deployment-focused
+Algorithm: backtracking
+Use LLM: True
+Goal: Deploy a chatbot backend service using containers and basic production configuration.
+Available time: 32 hours
+
+Recommended path:
+1. FastAPI Basics
+   id: fastapi-basics
+   topic: Backend Development
+   duration: 9h
+   difficulty: 3
+   utility: 49.50
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 22.75
+
+3. Authentication Basics for Web APIs
+   id: authentication-basics
+   topic: Backend Development
+   duration: 7h
+   difficulty: 4
+   utility: 45.00
+
+4. Chatbot Design Concepts
+   id: chatbot-concepts
+   topic: AI Chatbots
+   duration: 5h
+   difficulty: 2
+   utility: 33.50
+
+Total duration: 29h
+Total utility: 150.75
+Valid: True
+Violations: none
+============================================================
+
+============================================================
 Student: student-responsible-ai
 Algorithm: greedy
+Use LLM: False
 Goal: Understand responsible AI, privacy, and risks before deploying chatbot systems.
 Available time: 20 hours
 
@@ -881,6 +1751,7 @@ Violations: none
 ============================================================
 Student: student-responsible-ai
 Algorithm: backtracking
+Use LLM: False
 Goal: Understand responsible AI, privacy, and risks before deploying chatbot systems.
 Available time: 20 hours
 
@@ -908,6 +1779,76 @@ Recommended path:
 
 Total duration: 18h
 Total utility: 73.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-responsible-ai
+Algorithm: greedy
+Use LLM: True
+Goal: Understand responsible AI, privacy, and risks before deploying chatbot systems.
+Available time: 20 hours
+
+Recommended path:
+1. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 42.75
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 15.50
+
+3. Privacy and Data Handling for AI Systems
+   id: privacy-and-data-handling
+   topic: Responsible AI
+   duration: 6h
+   difficulty: 3
+   utility: 47.00
+
+Total duration: 18h
+Total utility: 105.25
+Valid: True
+Violations: none
+============================================================
+
+============================================================
+Student: student-responsible-ai
+Algorithm: backtracking
+Use LLM: True
+Goal: Understand responsible AI, privacy, and risks before deploying chatbot systems.
+Available time: 20 hours
+
+Recommended path:
+1. Responsible AI and Ethics Basics
+   id: ai-ethics-basics
+   topic: Responsible AI
+   duration: 4h
+   difficulty: 2
+   utility: 42.75
+
+2. SQL and Relational Databases
+   id: databases-sql
+   topic: Databases
+   duration: 8h
+   difficulty: 2
+   utility: 15.50
+
+3. Privacy and Data Handling for AI Systems
+   id: privacy-and-data-handling
+   topic: Responsible AI
+   duration: 6h
+   difficulty: 3
+   utility: 47.00
+
+Total duration: 18h
+Total utility: 105.25
 Valid: True
 Violations: none
 ============================================================

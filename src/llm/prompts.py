@@ -66,4 +66,24 @@ Consider:
 Return structured JSON matching the schema.
 Do not include resources not provided in the input.
 Each provided resource must receive exactly one score.
+
+Return only valid JSON. Do not wrap it in Markdown fences.
+The response must be a JSON object with exactly this shape:
+{
+  "scores": [
+    {
+      "resource_id": "the exact resource id from the input",
+      "relevance_score": 1,
+      "reason": "short reason for the score"
+    }
+  ]
+}
+
+Rules for the JSON:
+- Use the key "scores" for the list.
+- Use "resource_id", not "id".
+- Use "relevance_score", not "score".
+- relevance_score must be an integer from 1 to 10.
+- Include every input resource exactly once.
+- Do not add extra top-level keys such as "resources".
 """.strip()

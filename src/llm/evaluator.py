@@ -1,14 +1,25 @@
 import json
 from dataclasses import asdict, replace
 
+import requests
+
 from src.algorithms.greedy import compute_rule_based_utility
-from src.llm.config import load_llm_config
+from src.llm.config import LLMConfig, load_llm_config
 from src.llm.prompts import RESOURCE_RELEVANCE_SYSTEM_PROMPT
 from src.llm.schemas import ResourceRelevanceScore, ResourceRelevanceScores
 from src.models.resource import Resource
 from src.models.student import Student
 
 MISSING_SCORE_REASON = "Missing from LLM response; assigned neutral score."
+NEUTRAL_SCORE_REASON = "LLM_PROVIDER=none; assigned neutral score."
+OLLAMA_UNREACHABLE_MESSAGE = (
+    "Ollama is not running or is unreachable at {base_url}. "
+    "Start it with `docker compose up -d ollama`."
+)
+OLLAMA_MODEL_MISSING_MESSAGE = (
+    "Ollama model '{model}' is not available. Pull it with "
+    "`docker exec -it where-do-i-start-ollama ollama pull {model}`."
+)
 
 
 def rank_resources_rule_based(
@@ -45,12 +56,23 @@ def score_resources_relevance_with_llm(
 ) -> dict[str, ResourceRelevanceScore]:
     config = load_llm_config()
 
-    if config.provider != "gemini":
-        raise RuntimeError(
-            f"Gemini is the mandatory LLM provider, but LLM_PROVIDER is "
-            f"{config.provider!r}."
-        )
+    if config.provider == "gemini":
+        return score_resources_relevance_with_gemini(student, resources, config)
 
+    if config.provider == "ollama":
+        return score_resources_relevance_with_ollama(student, resources, config)
+
+    if config.provider == "none":
+        return build_neutral_resource_scores(resources)
+
+    raise RuntimeError(f"Unsupported LLM_PROVIDER: {config.provider}")
+
+
+def score_resources_relevance_with_gemini(
+    student: Student,
+    resources: list[Resource],
+    config: LLMConfig,
+) -> dict[str, ResourceRelevanceScore]:
     if not config.gemini_api_key:
         raise RuntimeError(
             "GEMINI_API_KEY is required to score resource relevance. "
@@ -81,9 +103,257 @@ def score_resources_relevance_with_llm(
             f"{type(exc).__name__}: {exc}"
         ) from exc
 
+    return _build_scores_by_resource_id(parsed.scores, resources)
+
+
+def score_resources_relevance_with_ollama(
+    student: Student,
+    resources: list[Resource],
+    config: LLMConfig,
+) -> dict[str, ResourceRelevanceScore]:
+    payload = {
+        "model": config.ollama_model,
+        "messages": [
+            {
+                "role": "system",
+                "content": RESOURCE_RELEVANCE_SYSTEM_PROMPT,
+            },
+            {
+                "role": "user",
+                "content": json.dumps(
+                    _build_relevance_payload(student, resources),
+                    ensure_ascii=True,
+                ),
+            },
+        ],
+        "stream": False,
+        "format": "json",
+    }
+
+    response = _post_ollama_chat(payload, config)
+    if response.status_code != 200 and _looks_like_format_rejection(response.text):
+        fallback_payload = dict(payload)
+        fallback_payload.pop("format", None)
+        response = _post_ollama_chat(fallback_payload, config)
+
+    if response.status_code != 200:
+        _raise_ollama_http_error(response, config)
+
+    try:
+        response_json = response.json()
+    except ValueError as exc:
+        raise RuntimeError(
+            "Ollama returned a non-JSON HTTP response. Body: "
+            f"{_short_fragment(response.text)}"
+        ) from exc
+
+    if "error" in response_json and _looks_like_missing_ollama_model(
+        str(response_json["error"])
+    ):
+        raise RuntimeError(
+            OLLAMA_MODEL_MISSING_MESSAGE.format(model=config.ollama_model)
+        )
+
+    content = response_json.get("message", {}).get("content")
+    if not isinstance(content, str):
+        raise RuntimeError(
+            "Ollama response did not include message.content. Body: "
+            f"{_short_fragment(response.text)}"
+        )
+
+    parsed = parse_llm_json_response(content)
+    raw_scores = _extract_score_items(parsed)
+    if not isinstance(raw_scores, list):
+        raise RuntimeError(
+            "LLM response JSON must contain a 'scores' or 'resources' list. Response: "
+            f"{_short_fragment(content)}"
+        )
+
+    return _build_scores_by_resource_id(
+        [_coerce_relevance_score(item) for item in raw_scores],
+        resources,
+    )
+
+
+def _extract_score_items(parsed: dict) -> list | None:
+    scores = parsed.get("scores")
+    if isinstance(scores, list):
+        return scores
+
+    resources = parsed.get("resources")
+    if isinstance(resources, list):
+        return resources
+
+    return None
+
+
+def build_neutral_resource_scores(
+    resources: list[Resource],
+) -> dict[str, ResourceRelevanceScore]:
+    return {
+        resource.id: ResourceRelevanceScore(
+            resource_id=resource.id,
+            relevance_score=5,
+            reason=NEUTRAL_SCORE_REASON,
+        )
+        for resource in resources
+    }
+
+
+def parse_llm_json_response(text: str) -> dict:
+    candidates = [
+        text,
+        _strip_markdown_json_fence(text),
+        _extract_first_json_object(text),
+    ]
+
+    for candidate in candidates:
+        if not candidate:
+            continue
+        try:
+            parsed = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict):
+            return parsed
+
+    raise RuntimeError(
+        "Could not parse LLM response as JSON. Response fragment: "
+        f"{_short_fragment(text)}"
+    )
+
+
+def _post_ollama_chat(payload: dict, config: LLMConfig) -> requests.Response:
+    try:
+        return requests.post(
+            f"{config.ollama_base_url}/api/chat",
+            json=payload,
+            timeout=config.ollama_timeout_seconds,
+        )
+    except requests.RequestException as exc:
+        raise RuntimeError(
+            OLLAMA_UNREACHABLE_MESSAGE.format(base_url=config.ollama_base_url)
+        ) from exc
+
+
+def _raise_ollama_http_error(response: requests.Response, config: LLMConfig) -> None:
+    body = response.text
+    if _looks_like_missing_ollama_model(body):
+        raise RuntimeError(
+            OLLAMA_MODEL_MISSING_MESSAGE.format(model=config.ollama_model)
+        )
+
+    raise RuntimeError(
+        "Ollama resource relevance scoring failed with HTTP status "
+        f"{response.status_code}. Body: {_short_fragment(body)}"
+    )
+
+
+def _looks_like_format_rejection(body: str) -> bool:
+    lowered = body.lower()
+    return "format" in lowered and (
+        "invalid" in lowered
+        or "unsupported" in lowered
+        or "unrecognized" in lowered
+        or "not support" in lowered
+        or "json" in lowered
+    )
+
+
+def _looks_like_missing_ollama_model(body: str) -> bool:
+    lowered = body.lower()
+    return "model" in lowered and (
+        "not found" in lowered
+        or "not available" in lowered
+        or "pull" in lowered
+        or "try pulling" in lowered
+    )
+
+
+def _strip_markdown_json_fence(text: str) -> str:
+    stripped = text.strip()
+    if not stripped.startswith("```"):
+        return stripped
+
+    lines = stripped.splitlines()
+    if len(lines) >= 2 and lines[-1].strip() == "```":
+        return "\n".join(lines[1:-1]).strip()
+
+    return stripped
+
+
+def _extract_first_json_object(text: str) -> str:
+    start = -1
+    depth = 0
+    in_string = False
+    escaped = False
+
+    for index, char in enumerate(text):
+        if start == -1:
+            if char == "{":
+                start = index
+                depth = 1
+            continue
+
+        if escaped:
+            escaped = False
+            continue
+
+        if char == "\\" and in_string:
+            escaped = True
+            continue
+
+        if char == '"':
+            in_string = not in_string
+            continue
+
+        if in_string:
+            continue
+
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+
+    return ""
+
+
+def _coerce_relevance_score(item: object) -> ResourceRelevanceScore:
+    if not isinstance(item, dict):
+        return ResourceRelevanceScore(
+            resource_id="",
+            relevance_score=5,
+            reason="Invalid LLM score item; assigned neutral score.",
+        )
+
+    resource_id = str(item.get("resource_id") or item.get("id") or "")
+    reason = item.get("reason")
+    if not isinstance(reason, str) or not reason.strip():
+        reason = "No reason provided by LLM."
+
+    try:
+        relevance_score = int(item.get("relevance_score", item.get("score", 5)))
+    except (TypeError, ValueError):
+        relevance_score = 5
+
+    relevance_score = min(10, max(1, relevance_score))
+
+    return ResourceRelevanceScore(
+        resource_id=resource_id,
+        relevance_score=relevance_score,
+        reason=reason,
+    )
+
+
+def _build_scores_by_resource_id(
+    scores: list[ResourceRelevanceScore],
+    resources: list[Resource],
+) -> dict[str, ResourceRelevanceScore]:
     allowed_ids = {resource.id for resource in resources}
     scores_by_id: dict[str, ResourceRelevanceScore] = {}
-    for score in parsed.scores:
+    for score in scores:
         if score.resource_id in allowed_ids:
             scores_by_id[score.resource_id] = score
 
@@ -95,6 +365,14 @@ def score_resources_relevance_with_llm(
         )
 
     return scores_by_id
+
+
+def _short_fragment(text: str, max_length: int = 300) -> str:
+    one_line = " ".join(text.split())
+    if len(one_line) <= max_length:
+        return one_line
+
+    return f"{one_line[:max_length]}..."
 
 
 def apply_llm_scores_to_resources(
@@ -139,6 +417,7 @@ def build_llm_scored_resources(
 
     debug = build_scoring_debug(
         student=student,
+        config=config,
         top_k=resolved_top_k,
         score_weight=resolved_score_weight,
         rule_based_ranking=rule_based_ranking,
@@ -164,6 +443,8 @@ def build_rule_based_scoring_debug(
 
     return {
         "student": asdict(student),
+        "provider": config.provider,
+        "model": _model_name_for_provider(config),
         "top_k": resolved_top_k,
         "score_weight": resolved_score_weight,
         "rule_based_ranking": _serialize_rule_based_ranking(rule_based_ranking),
@@ -174,6 +455,7 @@ def build_rule_based_scoring_debug(
 
 def build_scoring_debug(
     student: Student,
+    config: LLMConfig,
     top_k: int,
     score_weight: float,
     rule_based_ranking: list[Resource],
@@ -184,6 +466,8 @@ def build_scoring_debug(
 
     return {
         "student": asdict(student),
+        "provider": config.provider,
+        "model": _model_name_for_provider(config),
         "top_k": top_k,
         "score_weight": score_weight,
         "rule_based_ranking": _serialize_rule_based_ranking(rule_based_ranking),
@@ -269,6 +553,15 @@ def _serialize_combined_resource(
         "llm_relevance_score": llm_score.relevance_score if llm_score else 5,
         "final_utility": resource.utility,
     }
+
+
+def _model_name_for_provider(config: LLMConfig) -> str:
+    if config.provider == "gemini":
+        return config.gemini_model
+    if config.provider == "ollama":
+        return config.ollama_model
+
+    return ""
 
 
 def _model_dump(model) -> dict:
