@@ -15,11 +15,11 @@ from src.utils.validators import validate_learning_path
 
 CONFIGS = [
     {"algorithm": "greedy", "use_llm": False},
-    {"algorithm": "backtracking", "use_llm": False},
     {"algorithm": "branch_and_bound", "use_llm": False},
+    {"algorithm": "simulated_annealing", "use_llm": False},
     {"algorithm": "greedy", "use_llm": True},
-    {"algorithm": "backtracking", "use_llm": True},
     {"algorithm": "branch_and_bound", "use_llm": True},
+    {"algorithm": "simulated_annealing", "use_llm": True},
 ]
 CSV_COLUMNS = [
     "student_id",

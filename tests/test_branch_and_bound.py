@@ -3,7 +3,6 @@ from dataclasses import replace
 import pytest
 
 from src.algorithms import branch_and_bound
-from src.algorithms.backtracking import build_backtracking_learning_path
 from src.algorithms.branch_and_bound import build_branch_and_bound_learning_path
 from src.algorithms.greedy import build_greedy_learning_path
 from src.models.resource import Resource
@@ -145,30 +144,6 @@ def test_branch_and_bound_utility_is_at_least_greedy_on_small_instance() -> None
     assert validate_learning_path(branch_and_bound_path, student)["is_valid"] is True
 
 
-def test_branch_and_bound_utility_is_at_least_backtracking_on_small_instance() -> None:
-    student = make_student(available_hours=6)
-    resources = [
-        make_resource("dense-but-blocking", duration_hours=4, utility=10.0),
-        make_resource("first-half", duration_hours=3, utility=7.0),
-        make_resource("second-half", duration_hours=3, utility=7.0),
-    ]
-
-    backtracking_path = build_backtracking_learning_path(
-        student,
-        resources,
-        use_precomputed_utility=True,
-        min_utility_threshold=0.0,
-    )
-    branch_and_bound_path = build_branch_and_bound_learning_path(
-        student,
-        resources,
-        use_precomputed_utility=True,
-    )
-
-    assert branch_and_bound_path.total_utility >= backtracking_path.total_utility
-    assert validate_learning_path(branch_and_bound_path, student)["is_valid"] is True
-
-
 def test_path_service_accepts_branch_and_bound() -> None:
     student = make_student()
     resources = [make_resource("chatbot-basics")]
@@ -234,6 +209,32 @@ def test_branch_and_bound_uses_precomputed_utility_without_rule_scoring(
 
     assert path.resource_ids == ["high-utility"]
     assert path.total_utility == pytest.approx(12.0)
+
+
+def test_branch_and_bound_uses_upper_bound(monkeypatch) -> None:
+    calls = []
+    original_upper_bound = branch_and_bound._fractional_utility_upper_bound
+
+    def tracking_upper_bound(*args, **kwargs):
+        calls.append((args, kwargs))
+        return original_upper_bound(*args, **kwargs)
+
+    monkeypatch.setattr(
+        branch_and_bound,
+        "_fractional_utility_upper_bound",
+        tracking_upper_bound,
+    )
+    student = make_student(available_hours=4)
+    resources = [
+        make_resource("chatbot-basics", duration_hours=2),
+        make_resource("chatbot-project", duration_hours=2),
+    ]
+
+    path = build_branch_and_bound_learning_path(student, resources)
+
+    assert calls
+    assert path.resources
+    assert validate_learning_path(path, student)["is_valid"] is True
 
 
 def test_path_service_with_llm_scores_once_and_uses_scored_resources(

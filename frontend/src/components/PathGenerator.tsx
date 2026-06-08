@@ -86,8 +86,8 @@ function PathGenerator() {
             onChange={(event) => setAlgorithm(event.target.value as Algorithm)}
           >
             <option value="greedy">greedy</option>
-            <option value="backtracking">backtracking</option>
             <option value="branch_and_bound">branch_and_bound</option>
+            <option value="simulated_annealing">simulated_annealing</option>
           </select>
         </label>
 

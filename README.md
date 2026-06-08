@@ -11,12 +11,6 @@ preferencia de aprendizaje y dificultad esperada.
 
 ## CLI
 
-Generar una ruta con backtracking:
-
-```bash
-python -m src.main --student student-chatbot-beginner --algorithm backtracking
-```
-
 Generar una ruta con Branch and Bound:
 
 ```bash
@@ -27,8 +21,8 @@ Comparar algoritmos manualmente:
 
 ```bash
 python -m src.main --student student-chatbot-beginner --algorithm greedy
-python -m src.main --student student-chatbot-beginner --algorithm backtracking
 python -m src.main --student student-chatbot-beginner --algorithm branch_and_bound
+python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing
 python -m src.main --run-experiments
 ```
 
@@ -92,7 +86,7 @@ Ejemplo POST /paths/generate:
 ```json
 {
   "student_id": "student-chatbot-beginner",
-  "algorithm": "backtracking",
+  "algorithm": "branch_and_bound",
   "use_llm": false
 }
 ```
@@ -132,8 +126,8 @@ Examples:
 
 ```bash
 python -m src.main --student student-llm-apps --algorithm greedy --use-llm
-python -m src.main --student student-llm-apps --algorithm backtracking --use-llm
 python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
+python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing --use-llm
 python -m src.main --student student-llm-apps --debug-scoring
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-top-k 10 --llm-score-weight 2.0
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-provider none
@@ -141,10 +135,18 @@ python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-pr
 
 ### Branch and Bound
 
-Branch and Bound explores candidate learning paths like backtracking, but uses
-an optimistic upper bound based on fractional utility density to prune branches
+Branch and Bound explores candidate learning paths recursively and uses an
+optimistic upper bound based on fractional utility density to prune branches
 that cannot improve the best solution found so far. It is slower than Greedy but
-usually explores less than plain Backtracking.
+can find stronger paths on small and medium candidate sets.
+
+### Simulated Annealing
+
+Simulated Annealing starts from an initial greedy path, generates neighboring
+paths by adding, removing, or replacing resources, and always accepts better
+paths. When the temperature is high, it can also accept worse paths with a
+decreasing probability. This helps the search escape local optima while still
+returning the best valid path found.
 
 ## Ollama with Docker
 
@@ -191,8 +193,8 @@ Generate path:
 
 ```bash
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm greedy --use-llm
-docker compose exec backend python -m src.main --student student-llm-apps --algorithm backtracking --use-llm
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
+docker compose exec backend python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing --use-llm
 ```
 
 ## Frontend

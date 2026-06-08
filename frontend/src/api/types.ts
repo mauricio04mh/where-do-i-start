@@ -1,6 +1,6 @@
 export type Preference = "practical" | "theoretical" | "balanced";
 
-export type Algorithm = "greedy" | "backtracking" | "branch_and_bound";
+export type Algorithm = "greedy" | "branch_and_bound" | "simulated_annealing";
 
 export type Student = {
   id: string;
