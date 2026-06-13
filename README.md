@@ -23,6 +23,7 @@ Comparar algoritmos manualmente:
 python -m src.main --student student-chatbot-beginner --algorithm greedy
 python -m src.main --student student-chatbot-beginner --algorithm branch_and_bound
 python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing
+python -m src.main --student student-chatbot-beginner --algorithm ant_colony
 python -m src.main --run-experiments
 ```
 
@@ -128,6 +129,7 @@ Examples:
 python -m src.main --student student-llm-apps --algorithm greedy --use-llm
 python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
 python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing --use-llm
+python -m src.main --student student-chatbot-beginner --algorithm ant_colony --use-llm
 python -m src.main --student student-llm-apps --debug-scoring
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-top-k 10 --llm-score-weight 2.0
 python -m src.main --student student-llm-apps --debug-scoring --use-llm --llm-provider none
@@ -147,6 +149,14 @@ paths by adding, removing, or replacing resources, and always accepts better
 paths. When the temperature is high, it can also accept worse paths with a
 decreasing probability. This helps the search escape local optima while still
 returning the best valid path found.
+
+### Ant Colony Optimization
+
+Ant Colony Optimization construye rutas mediante varias hormigas artificiales.
+Cada hormiga selecciona recursos validos segun una combinacion de feromona
+acumulada y heuristica local. Las rutas de mayor calidad refuerzan los recursos
+usados mediante feromonas, mientras que la evaporacion evita convergencia
+prematura.
 
 ## Ollama with Docker
 
@@ -195,6 +205,7 @@ Generate path:
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm greedy --use-llm
 docker compose exec backend python -m src.main --student student-llm-apps --algorithm branch_and_bound --use-llm
 docker compose exec backend python -m src.main --student student-chatbot-beginner --algorithm simulated_annealing --use-llm
+docker compose exec backend python -m src.main --student student-chatbot-beginner --algorithm ant_colony --use-llm
 ```
 
 ## Frontend

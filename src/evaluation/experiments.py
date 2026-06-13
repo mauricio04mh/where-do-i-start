@@ -14,12 +14,14 @@ from src.utils.loaders import load_resources, load_students
 from src.utils.validators import validate_learning_path
 
 CONFIGS = [
-    {"algorithm": "greedy", "use_llm": False},
-    {"algorithm": "branch_and_bound", "use_llm": False},
+    # {"algorithm": "greedy", "use_llm": False},
+    # {"algorithm": "branch_and_bound", "use_llm": False},
     {"algorithm": "simulated_annealing", "use_llm": False},
+    {"algorithm": "ant_colony", "use_llm": False},
     {"algorithm": "greedy", "use_llm": True},
     {"algorithm": "branch_and_bound", "use_llm": True},
     {"algorithm": "simulated_annealing", "use_llm": True},
+    {"algorithm": "ant_colony", "use_llm": True},
 ]
 CSV_COLUMNS = [
     "student_id",

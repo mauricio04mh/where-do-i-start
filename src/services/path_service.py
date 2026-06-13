@@ -1,3 +1,4 @@
+from src.algorithms.ant_colony import build_ant_colony_learning_path
 from src.algorithms.branch_and_bound import build_branch_and_bound_learning_path
 from src.algorithms.greedy import build_greedy_learning_path
 from src.algorithms.simulated_annealing import (
@@ -15,7 +16,12 @@ from src.llm.evaluator import (
 )
 from src.utils.validators import validate_learning_path
 
-SUPPORTED_ALGORITHMS = {"greedy", "branch_and_bound", "simulated_annealing"}
+SUPPORTED_ALGORITHMS = {
+    "greedy",
+    "branch_and_bound",
+    "simulated_annealing",
+    "ant_colony",
+}
 
 
 def generate_path_for_student(
@@ -106,6 +112,13 @@ def build_learning_path(
         )
     if algorithm == "simulated_annealing":
         return build_simulated_annealing_learning_path(
+            student,
+            resources,
+            use_precomputed_utility=use_precomputed_utility,
+            min_utility_threshold=min_utility_threshold,
+        )
+    if algorithm == "ant_colony":
+        return build_ant_colony_learning_path(
             student,
             resources,
             use_precomputed_utility=use_precomputed_utility,
