@@ -3,7 +3,7 @@ import json
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from statistics import mean
+from statistics import mean, pstdev
 from typing import Any
 
 from src.models.student import Student
@@ -21,6 +21,15 @@ DEFAULT_ALGORITHMS = [
     "ant_colony",
 ]
 DEFAULT_SEEDS = [42]
+DEFAULT_SENSITIVITY_ALGORITHMS = [
+    "greedy",
+    "simulated_annealing",
+    "ant_colony",
+]
+STOCHASTIC_ALGORITHMS = {
+    "simulated_annealing",
+    "ant_colony",
+}
 EXPERIMENT_MODES = {"manual", "simulation", "llm-comparison", "sensitivity"}
 CSV_COLUMNS = [
     "mode",
@@ -45,8 +54,11 @@ CSV_COLUMNS = [
     "resource_topics",
     "resource_types",
     "path_signature",
+    "resource_set_signature",
     "same_as_greedy",
+    "same_resource_set_as_greedy",
     "path_overlap_with_greedy",
+    "resource_set_overlap_with_greedy",
     "utility_delta_vs_greedy",
     "coverage_delta_vs_greedy",
     "runtime_delta_vs_greedy",
@@ -113,7 +125,12 @@ def run_experiments(
         output_json = str(output_path / "experiment_results.json")
         output_summary = str(output_path / "experiment_summary.txt")
 
-    selected_algorithms = algorithms if algorithms is not None else DEFAULT_ALGORITHMS
+    if algorithms is not None:
+        selected_algorithms = algorithms
+    elif mode == "sensitivity":
+        selected_algorithms = DEFAULT_SENSITIVITY_ALGORITHMS
+    else:
+        selected_algorithms = DEFAULT_ALGORITHMS
     selected_seeds = seeds if seeds is not None else DEFAULT_SEEDS
     configs = build_experiment_configs(
         mode=mode,
@@ -248,6 +265,7 @@ def _path_details(path_resources: list) -> dict[str, Any]:
         "resource_topics": [resource.topic for resource in path_resources],
         "resource_types": [resource.type for resource in path_resources],
         "path_signature": " > ".join(resource_ids),
+        "resource_set_signature": _resource_set_signature(resource_ids),
     }
 
 
@@ -258,6 +276,7 @@ def _empty_path_details() -> dict[str, Any]:
         "resource_topics": [],
         "resource_types": [],
         "path_signature": "",
+        "resource_set_signature": "",
     }
 
 
@@ -279,7 +298,14 @@ def _add_greedy_comparison_metrics(rows: list[dict[str, Any]]) -> None:
         row.update(
             {
                 "same_as_greedy": row["resource_ids"] == greedy_row["resource_ids"],
+                "same_resource_set_as_greedy": (
+                    row_resource_ids == greedy_resource_ids
+                ),
                 "path_overlap_with_greedy": _path_overlap(
+                    row_resource_ids,
+                    greedy_resource_ids,
+                ),
+                "resource_set_overlap_with_greedy": _path_overlap(
                     row_resource_ids,
                     greedy_resource_ids,
                 ),
@@ -303,7 +329,9 @@ def _comparison_key(row: dict[str, Any]) -> tuple[str, int, bool]:
 def _empty_greedy_comparison_metrics() -> dict[str, Any]:
     return {
         "same_as_greedy": None,
+        "same_resource_set_as_greedy": None,
         "path_overlap_with_greedy": None,
+        "resource_set_overlap_with_greedy": None,
         "utility_delta_vs_greedy": None,
         "coverage_delta_vs_greedy": None,
         "runtime_delta_vs_greedy": None,
@@ -315,6 +343,10 @@ def _path_overlap(resource_ids: set[str], greedy_resource_ids: set[str]) -> floa
     if not union:
         return 1.0
     return len(resource_ids & greedy_resource_ids) / len(union)
+
+
+def _resource_set_signature(resource_ids: list[str]) -> str:
+    return " | ".join(sorted(set(resource_ids)))
 
 
 def _validate_algorithms(algorithms: list[str]) -> None:
@@ -371,21 +403,50 @@ def _write_summary(path: Path, rows: list[dict[str, Any]]) -> None:
                 f"  average_utility: {_average_field(algorithm_rows, 'total_utility')}\n"
             )
             file.write(
-                f"  average_runtime_seconds: "
-                f"{_average_field(algorithm_rows, 'runtime_seconds')}\n"
+                f"  std_utility: {_std_field(algorithm_rows, 'total_utility')}\n"
             )
             file.write(
-                f"  average_validity: {_average_validity(algorithm_rows)}\n"
+                f"  min_utility: {_min_field(algorithm_rows, 'total_utility')}\n"
+            )
+            file.write(
+                f"  max_utility: {_max_field(algorithm_rows, 'total_utility')}\n"
             )
             file.write(
                 f"  average_coverage: {_average_field(algorithm_rows, 'coverage_score')}\n"
             )
             file.write(
+                f"  std_coverage: {_std_field(algorithm_rows, 'coverage_score')}\n"
+            )
+            file.write(
+                f"  min_coverage: {_min_field(algorithm_rows, 'coverage_score')}\n"
+            )
+            file.write(
+                f"  max_coverage: {_max_field(algorithm_rows, 'coverage_score')}\n"
+            )
+            file.write(
+                f"  average_runtime_seconds: "
+                f"{_average_field(algorithm_rows, 'runtime_seconds')}\n"
+            )
+            file.write(
+                f"  std_runtime_seconds: "
+                f"{_std_field(algorithm_rows, 'runtime_seconds')}\n"
+            )
+            file.write(
+                f"  average_validity: {_average_validity(algorithm_rows)}\n"
+            )
+            file.write(
                 f"  unique_paths: {_unique_path_count(algorithm_rows)}\n"
+            )
+            file.write(
+                f"  unique_resource_sets: {_unique_resource_set_count(algorithm_rows)}\n"
             )
             file.write(
                 f"  average_path_overlap_with_greedy: "
                 f"{_average_field(algorithm_rows, 'path_overlap_with_greedy')}\n"
+            )
+            file.write(
+                f"  average_resource_set_overlap_with_greedy: "
+                f"{_average_field(algorithm_rows, 'resource_set_overlap_with_greedy')}\n"
             )
             file.write(
                 f"  average_utility_delta_vs_greedy: "
@@ -399,6 +460,39 @@ def _write_summary(path: Path, rows: list[dict[str, Any]]) -> None:
                 f"  coverage_wins_vs_greedy: "
                 f"{_count_positive_field(algorithm_rows, 'coverage_delta_vs_greedy')}\n"
             )
+            file.write("\n")
+
+        file.write("Stochastic algorithm stability\n")
+        file.write("------------------------------\n")
+        for algorithm in sorted(STOCHASTIC_ALGORITHMS):
+            algorithm_rows = [row for row in ok_rows if row["algorithm"] == algorithm]
+            average_unique_paths = _average_unique_signatures_per_student(
+                algorithm_rows,
+                "path_signature",
+            )
+            average_unique_resource_sets = _average_unique_signatures_per_student(
+                algorithm_rows,
+                "resource_set_signature",
+            )
+            file.write(f"{algorithm}:\n")
+            file.write(
+                f"  variability_score: {_std_field(algorithm_rows, 'total_utility')}\n"
+            )
+            file.write(
+                f"  average_unique_paths_per_student: "
+                f"{average_unique_paths}\n"
+            )
+            file.write(
+                f"  average_unique_resource_sets_per_student: "
+                f"{average_unique_resource_sets}\n"
+            )
+            file.write(
+                f"  best_utility_observed: {_max_field(algorithm_rows, 'total_utility')}\n"
+            )
+            file.write(
+                f"  worst_utility_observed: {_min_field(algorithm_rows, 'total_utility')}\n"
+            )
+            file.write("\n")
 
 
 def _average_field(rows: list[dict[str, Any]], field: str) -> str:
@@ -406,6 +500,27 @@ def _average_field(rows: list[dict[str, Any]], field: str) -> str:
     if not values:
         return "n/a"
     return f"{mean(values):.4f}"
+
+
+def _std_field(rows: list[dict[str, Any]], field: str) -> str:
+    values = [row[field] for row in rows if row[field] is not None]
+    if not values:
+        return "n/a"
+    return f"{pstdev(values):.4f}"
+
+
+def _min_field(rows: list[dict[str, Any]], field: str) -> str:
+    values = [row[field] for row in rows if row[field] is not None]
+    if not values:
+        return "n/a"
+    return f"{min(values):.4f}"
+
+
+def _max_field(rows: list[dict[str, Any]], field: str) -> str:
+    values = [row[field] for row in rows if row[field] is not None]
+    if not values:
+        return "n/a"
+    return f"{max(values):.4f}"
 
 
 def _average_validity(rows: list[dict[str, Any]]) -> str:
@@ -417,6 +532,29 @@ def _average_validity(rows: list[dict[str, Any]]) -> str:
 
 def _unique_path_count(rows: list[dict[str, Any]]) -> int:
     return len({row["path_signature"] for row in rows})
+
+
+def _unique_resource_set_count(rows: list[dict[str, Any]]) -> int:
+    return len({row["resource_set_signature"] for row in rows})
+
+
+def _average_unique_signatures_per_student(
+    rows: list[dict[str, Any]],
+    signature_field: str,
+) -> str:
+    signatures_by_student: dict[str, set[str]] = {}
+    for row in rows:
+        signatures_by_student.setdefault(row["student_id"], set()).add(
+            row[signature_field]
+        )
+
+    if not signatures_by_student:
+        return "n/a"
+
+    average_unique_signatures = mean(
+        len(signatures) for signatures in signatures_by_student.values()
+    )
+    return f"{average_unique_signatures:.4f}"
 
 
 def _count_positive_field(rows: list[dict[str, Any]], field: str) -> int:

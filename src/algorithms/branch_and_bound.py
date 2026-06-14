@@ -16,6 +16,7 @@ def build_branch_and_bound_learning_path(
     max_candidates: int = 24,
     use_precomputed_utility: bool = False,
     min_utility_threshold: float | None = None,
+    seed: int | None = None,
 ) -> LearningPath:
     root_utility_threshold = (
         MIN_ROOT_UTILITY if min_utility_threshold is None else min_utility_threshold

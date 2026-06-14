@@ -22,14 +22,14 @@ def build_simulated_annealing_learning_path(
     initial_temperature: float = 10.0,
     cooling_rate: float = 0.995,
     min_temperature: float = 0.01,
-    seed: int = 42,
+    seed: int | None = None,
     use_precomputed_utility: bool = False,
     min_utility_threshold: float | None = None,
 ) -> LearningPath:
     root_utility_threshold = (
         MIN_ROOT_UTILITY if min_utility_threshold is None else min_utility_threshold
     )
-    rng = random.Random(seed)
+    rng = random.Random(42 if seed is None else seed)
 
     if use_precomputed_utility:
         utility_resources = [replace(resource) for resource in resources]

@@ -18,7 +18,7 @@ def build_ant_colony_learning_path(
     beta: float = 2.0,
     evaporation_rate: float = 0.15,
     pheromone_deposit_weight: float = 1.0,
-    seed: int = 42,
+    seed: int | None = None,
     use_precomputed_utility: bool = False,
     min_utility_threshold: float | None = None,
 ) -> LearningPath:
@@ -30,7 +30,7 @@ def build_ant_colony_learning_path(
     pheromones: dict[str, float] = {
         resource.id: 1.0 for resource in prepared_resources
     }
-    rng = random.Random(seed)
+    rng = random.Random(42 if seed is None else seed)
 
     best_path = LearningPath(resources=[])
     best_score = _score_path(best_path, student)

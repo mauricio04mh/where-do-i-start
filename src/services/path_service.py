@@ -115,6 +115,7 @@ def build_learning_path(
             resources,
             use_precomputed_utility=use_precomputed_utility,
             min_utility_threshold=min_utility_threshold,
+            seed=seed,
         )
     if algorithm == "branch_and_bound":
         return build_branch_and_bound_learning_path(
@@ -122,34 +123,21 @@ def build_learning_path(
             resources,
             use_precomputed_utility=use_precomputed_utility,
             min_utility_threshold=min_utility_threshold,
+            seed=seed,
         )
     if algorithm == "simulated_annealing":
-        if seed is not None:
-            return build_simulated_annealing_learning_path(
-                student,
-                resources,
-                seed=seed,
-                use_precomputed_utility=use_precomputed_utility,
-                min_utility_threshold=min_utility_threshold,
-            )
         return build_simulated_annealing_learning_path(
             student,
             resources,
+            seed=seed,
             use_precomputed_utility=use_precomputed_utility,
             min_utility_threshold=min_utility_threshold,
         )
     if algorithm == "ant_colony":
-        if seed is not None:
-            return build_ant_colony_learning_path(
-                student,
-                resources,
-                seed=seed,
-                use_precomputed_utility=use_precomputed_utility,
-                min_utility_threshold=min_utility_threshold,
-            )
         return build_ant_colony_learning_path(
             student,
             resources,
+            seed=seed,
             use_precomputed_utility=use_precomputed_utility,
             min_utility_threshold=min_utility_threshold,
         )

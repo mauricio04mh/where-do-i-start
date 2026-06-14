@@ -372,6 +372,7 @@ def build_greedy_learning_path(
     resources: list[Resource],
     use_precomputed_utility: bool = False,
     min_utility_threshold: float | None = None,
+    seed: int | None = None,
 ) -> LearningPath:
     root_utility_threshold = (
         MIN_ROOT_UTILITY if min_utility_threshold is None else min_utility_threshold
