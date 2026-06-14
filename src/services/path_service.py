@@ -10,10 +10,6 @@ from src.models.resource import Resource
 from src.models.student import Student
 from src.repositories.resource_repository import list_resources
 from src.repositories.student_repository import get_student
-from src.llm.evaluator import (
-    build_llm_scored_resources,
-    update_llm_debug_with_selected_resources,
-)
 from src.utils.validators import validate_learning_path
 
 SUPPORTED_ALGORITHMS = {
@@ -22,6 +18,20 @@ SUPPORTED_ALGORITHMS = {
     "simulated_annealing",
     "ant_colony",
 }
+
+
+def build_llm_scored_resources(*args, **kwargs):
+    from src.llm.evaluator import build_llm_scored_resources as build_scored
+
+    return build_scored(*args, **kwargs)
+
+
+def update_llm_debug_with_selected_resources(*args, **kwargs) -> None:
+    from src.llm.evaluator import (
+        update_llm_debug_with_selected_resources as update_debug,
+    )
+
+    update_debug(*args, **kwargs)
 
 
 def generate_path_for_student(
@@ -43,6 +53,7 @@ def generate_path_for_student_object(
     llm_top_k: int | None = None,
     llm_score_weight: float | None = None,
     resources: list[Resource] | None = None,
+    seed: int | None = None,
 ) -> dict:
     if algorithm not in SUPPORTED_ALGORITHMS:
         raise ValueError(
@@ -68,6 +79,7 @@ def generate_path_for_student_object(
         resources=source_resources,
         use_precomputed_utility=use_llm,
         min_utility_threshold=min_utility_threshold,
+        seed=seed,
     )
     if llm_debug is not None:
         update_llm_debug_with_selected_resources(
@@ -95,6 +107,7 @@ def build_learning_path(
     resources: list[Resource],
     use_precomputed_utility: bool = False,
     min_utility_threshold: float | None = None,
+    seed: int | None = None,
 ) -> LearningPath:
     if algorithm == "greedy":
         return build_greedy_learning_path(
@@ -111,6 +124,14 @@ def build_learning_path(
             min_utility_threshold=min_utility_threshold,
         )
     if algorithm == "simulated_annealing":
+        if seed is not None:
+            return build_simulated_annealing_learning_path(
+                student,
+                resources,
+                seed=seed,
+                use_precomputed_utility=use_precomputed_utility,
+                min_utility_threshold=min_utility_threshold,
+            )
         return build_simulated_annealing_learning_path(
             student,
             resources,
@@ -118,6 +139,14 @@ def build_learning_path(
             min_utility_threshold=min_utility_threshold,
         )
     if algorithm == "ant_colony":
+        if seed is not None:
+            return build_ant_colony_learning_path(
+                student,
+                resources,
+                seed=seed,
+                use_precomputed_utility=use_precomputed_utility,
+                min_utility_threshold=min_utility_threshold,
+            )
         return build_ant_colony_learning_path(
             student,
             resources,

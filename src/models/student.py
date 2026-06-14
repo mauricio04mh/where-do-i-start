@@ -11,3 +11,4 @@ class Student:
     preference: str
     target_topics: list[str] = field(default_factory=list)
     constraints: list[str] = field(default_factory=list)
+    simulation_metadata: dict = field(default_factory=dict)

@@ -1,10 +1,6 @@
 import argparse
 import os
 
-from src.llm.evaluator import (
-    build_llm_scored_resources,
-    build_rule_based_scoring_debug,
-)
 from src.models.learning_path import LearningPath
 from src.models.resource import Resource
 from src.models.student import Student
@@ -84,6 +80,48 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Run all algorithms for all students and save evaluation reports.",
     )
+    parser.add_argument(
+        "--experiment-mode",
+        default="manual",
+        choices=["manual", "simulation", "llm-comparison", "sensitivity"],
+        help="Experiment mode to use with --run-experiments.",
+    )
+    parser.add_argument(
+        "--experiment-output-csv",
+        default="reports/results/experiment_results.csv",
+        help="CSV output path for --run-experiments.",
+    )
+    parser.add_argument(
+        "--experiment-output-json",
+        default="reports/results/experiment_results.json",
+        help="JSON output path for --run-experiments.",
+    )
+    parser.add_argument(
+        "--experiment-output-summary",
+        default="reports/results/experiment_summary.txt",
+        help="Summary TXT output path for --run-experiments.",
+    )
+    parser.add_argument(
+        "--experiment-algorithms",
+        nargs="+",
+        help=(
+            "Algorithms for --run-experiments, separated by spaces or commas. "
+            "Defaults to all supported algorithms."
+        ),
+    )
+    parser.add_argument(
+        "--experiment-seeds",
+        nargs="+",
+        help=(
+            "Integer seeds for --run-experiments, separated by spaces or commas. "
+            "Defaults to 42."
+        ),
+    )
+    parser.add_argument(
+        "--include-llm",
+        action="store_true",
+        help="Include LLM-backed experiment configurations.",
+    )
     return parser.parse_args()
 
 
@@ -94,6 +132,48 @@ def apply_llm_runtime_overrides(args: argparse.Namespace) -> None:
         os.environ["OLLAMA_MODEL"] = args.ollama_model
     if args.ollama_base_url:
         os.environ["OLLAMA_BASE_URL"] = args.ollama_base_url
+
+
+def _normalize_option_values(value: str | list[str] | None) -> list[str] | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return [value]
+    return value
+
+
+def parse_experiment_algorithms(value: str | list[str] | None) -> list[str] | None:
+    raw_values = _normalize_option_values(value)
+    if raw_values is None:
+        return None
+
+    algorithms: list[str] = []
+    for raw_value in raw_values:
+        algorithms.extend(
+            algorithm.strip()
+            for algorithm in raw_value.split(",")
+            if algorithm.strip()
+        )
+    return algorithms
+
+
+def parse_experiment_seeds(value: str | list[str] | None) -> list[int] | None:
+    raw_values = _normalize_option_values(value)
+    if raw_values is None:
+        return None
+
+    seeds: list[int] = []
+    for raw_value in raw_values:
+        for raw_seed in raw_value.split(","):
+            raw_seed = raw_seed.strip()
+            if not raw_seed:
+                continue
+            try:
+                seeds.append(int(raw_seed))
+            except ValueError as exc:
+                raise SystemExit(f"Invalid experiment seed '{raw_seed}'.") from exc
+
+    return seeds
 
 
 def select_student(
@@ -220,6 +300,13 @@ def main() -> None:
         run_experiments(
             resources_path=args.resources_path,
             students_path=args.students_path,
+            output_csv=args.experiment_output_csv,
+            output_json=args.experiment_output_json,
+            output_summary=args.experiment_output_summary,
+            mode=args.experiment_mode,
+            algorithms=parse_experiment_algorithms(args.experiment_algorithms),
+            seeds=parse_experiment_seeds(args.experiment_seeds),
+            include_llm=args.include_llm,
         )
         return
 
@@ -232,6 +319,11 @@ def main() -> None:
     student = select_student(args=args, students=students, resources=resources)
 
     if args.debug_scoring:
+        from src.llm.evaluator import (
+            build_llm_scored_resources,
+            build_rule_based_scoring_debug,
+        )
+
         try:
             if args.use_llm:
                 _, debug = build_llm_scored_resources(
